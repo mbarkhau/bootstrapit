@@ -1,0 +1,64 @@
+# This file is part of the PACKAGE_NAME project
+# https://github.com/mbarkhau/PACKAGE_NAME
+#
+# (C) YEAR AUTHOR_NAME (AUTHOR_EMAIL)
+# SPDX-License-Identifier: MIT
+
+import pathlib
+import setuptools
+
+
+def project_path(filename):
+    return (pathlib.Path(__file__).parent / filename).absolute()
+
+
+def read(filename):
+    with project_path(filename).open(mode="r") as fh:
+        return fh.read()
+
+
+install_requires = []
+
+long_description = "\n\n".join((read("README.md"), read("CONTRIBUTING.md"), read("CHANGELOG.md")))
+
+
+setuptools.setup(
+    name="PACKAGE_NAME",
+    license="MIT",
+    author="Manuel Barkhau",
+    author_email="mbarkhau@gmail.com",
+    url="https://github.com/mbarkhau/PACKAGE_NAME",
+    version="201809.2a0",
+    keywords="formatter yapf black pyfmt gofmt",
+    description="Another uncompromising code formatter.",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    packages=["PACKAGE_NAME"],
+    package_dir={"": "src"},
+    install_requires=install_requires,
+    entry_points="""
+        [console_scripts]
+        sjfmt=PACKAGE_NAME.sjfmt:main
+        sjfmtd=PACKAGE_NAME.sjfmtd:main
+    """,
+    python_requires=">=3.6",
+    zip_safe=True,
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Environment :: Console",
+        "Environment :: Other Environment",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: Unix",
+        "Operating System :: POSIX",
+        "Operating System :: Microsoft :: Windows",
+        "Operating System :: MacOS :: MacOS X",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: Implementation :: CPython",
+        "Programming Language :: Python :: Implementation :: PyPy",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
+)

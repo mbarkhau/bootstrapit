@@ -1,0 +1,21 @@
+
+
+## Start the development http server in debug mode
+.PHONY: serve
+serve:
+	ENV=dev PYTHONPATH=src/:vendor/:$$PYTHONPATH \
+		$(DEV_ENV_PY) -m des_v2.app
+
+## -- Build/Deploy --
+
+
+## TODO Generate Documentation
+.PHONY: doc
+doc:
+	echo "Not Implemented"
+
+
+## TODO Build docker image
+.PHONY: build
+build:
+	echo "Not Implemented"
