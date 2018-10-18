@@ -101,8 +101,8 @@ MONTH=$(date +%m)
 
 GIT_REPO_DOMAIN=$( echo "${GIT_REPO_URL}" | sed -E -e 's;https?://;;g' | sed -E 's;/.*$;;g' )
 GIT_REPO_PATH=$( echo "${GIT_REPO_URL}" | sed -E -e 's;https?://[^/]+/;;g' | sed -E 's;(/|.git)$;;g' )
-GIT_REPO_NAMESPACE=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;/\w+$;;g' )
-GIT_REPO_NAME=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;^\w+/;;g' )
+GIT_REPO_NAMESPACE=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;/[A-Za-z_-]+$;;g' )
+GIT_REPO_NAME=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;^[A-Za-z_-]+/;;g' )
 
 if [[ ! ${MODULE_NAME} ]]; then
     MODULE_NAME=$( echo "$GIT_REPO_NAME" | sed -E -e 's;-;_;g');
@@ -155,14 +155,12 @@ fi
 
 echo "AUTHOR_EMAIL       : "${AUTHOR_EMAIL};
 echo "AUTHOR_NAME        : "${AUTHOR_NAME};
-echo "BOOTSTRAPIT_GIT_URL: "${BOOTSTRAPIT_GIT_URL};
 echo "GIT_REPO_DOMAIN    : "${GIT_REPO_DOMAIN};
 echo "GIT_REPO_NAMESPACE : "${GIT_REPO_NAMESPACE};
 echo "GIT_REPO_NAME      : "${GIT_REPO_NAME};
 echo "GIT_REPO_PATH      : "${GIT_REPO_PATH};
 echo "GIT_REPO_URL       : "${GIT_REPO_URL};
 echo "MODULE_NAME        : "${MODULE_NAME};
-echo "HOME               : "${HOME};
 echo "MONTH              : "${MONTH};
 echo "PAGES_DOMAIN       : "${PAGES_DOMAIN};
 echo "YEAR               : "${YEAR};
