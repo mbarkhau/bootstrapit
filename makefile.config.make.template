@@ -1,6 +1,6 @@
 
-PACKAGE_NAME := GIT_REPO_NAME
-DOCKER_REGISTRY_URL := registry.gitlab.com/GIT_REPO_GROUP/GIT_REPO_NAME
+PACKAGE_NAME := ${GIT_REPO_NAME}
+DOCKER_REGISTRY_URL := registry.gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}
 
 # This is the python version that is used for:
 # - `make fmt`

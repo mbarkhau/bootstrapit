@@ -168,12 +168,13 @@ echo "PAGES_DOMAIN       : "${PAGES_DOMAIN};
 echo "YEAR               : "${YEAR};
 
 BOOTSTRAPIT_GIT_PATH=/tmp/bootstrapit;
+
 if [[ ! -e $BOOTSTRAPIT_GIT_PATH ]]; then
     git clone ${BOOTSTRAPIT_GIT_URL} ${BOOTSTRAPIT_GIT_PATH};
 else
     OLD_PWD=${PWD};
     cd ${BOOTSTRAPIT_GIT_PATH};
-    git pull;
+    git pull --quiet;
     cd $OLD_PWD;
 fi
 
@@ -183,15 +184,16 @@ fi
 function format_template()
 {
     cat $1 \
-        | sed "s;GIT_REPO_URL;${GIT_REPO_URL};g" \
-        | sed "s;GIT_REPO_PATH;${GIT_REPO_PATH};g" \
-        | sed "s;GIT_REPO_NAMESPACE;${GIT_REPO_NAMESPACE};g" \
-        | sed "s;GIT_REPO_NAME;${GIT_REPO_NAME};g" \
-        | sed "s;GIT_REPO_DOMAIN;${GIT_REPO_DOMAIN};g" \
-        | sed "s;AUTHOR_EMAIL;${AUTHOR_EMAIL};g" \
-        | sed "s;AUTHOR_NAME;${AUTHOR_NAME};g" \
-        | sed "s;YEAR;${YEAR};g" \
-        | sed "s;MONTH;${MONTH};g" \
+        | sed "s;\${GIT_REPO_URL};${GIT_REPO_URL};g" \
+        | sed "s;\${GIT_REPO_PATH};${GIT_REPO_PATH};g" \
+        | sed "s;\${GIT_REPO_NAMESPACE};${GIT_REPO_NAMESPACE};g" \
+        | sed "s;\${GIT_REPO_NAME};${GIT_REPO_NAME};g" \
+        | sed "s;\${GIT_REPO_DOMAIN};${GIT_REPO_DOMAIN};g" \
+        | sed "s;\${AUTHOR_EMAIL};${AUTHOR_EMAIL};g" \
+        | sed "s;\${AUTHOR_NAME};${AUTHOR_NAME};g" \
+        | sed "s;\${MODULE_NAME};${MODULE_NAME};g" \
+        | sed "s;\${YEAR};${YEAR};g" \
+        | sed "s;\${MONTH};${MONTH};g" \
         > $1.tmp;
     mv $1.tmp $1;
 }
@@ -203,7 +205,7 @@ function copy_template()
     else
         dest_path=${GIT_REPO_NAME}/$2;
     fi;
-    cat ${BOOTSTRAP_PATH}/$1.template > ${dest_path};
+    cat ${BOOTSTRAPIT_GIT_PATH}/$1.template > ${dest_path};
 
     format_template ${dest_path};
 }

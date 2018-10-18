@@ -1,5 +1,5 @@
-# Changelog for {GIT_REPO_NAME}
+# Changelog for ${GIT_REPO_URL}
 
-## vYEARMONTH.0001-alpha
+## v${YEAR}${MONTH}.0001-alpha
 
  - Initial release
