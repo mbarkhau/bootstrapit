@@ -152,19 +152,6 @@ if [[ -f ${GIT_REPO_NAME}/.git/config ]]; then
     fi
 fi
 
-
-echo "AUTHOR_EMAIL       : "${AUTHOR_EMAIL};
-echo "AUTHOR_NAME        : "${AUTHOR_NAME};
-echo "GIT_REPO_DOMAIN    : "${GIT_REPO_DOMAIN};
-echo "GIT_REPO_NAMESPACE : "${GIT_REPO_NAMESPACE};
-echo "GIT_REPO_NAME      : "${GIT_REPO_NAME};
-echo "GIT_REPO_PATH      : "${GIT_REPO_PATH};
-echo "GIT_REPO_URL       : "${GIT_REPO_URL};
-echo "MODULE_NAME        : "${MODULE_NAME};
-echo "MONTH              : "${MONTH};
-echo "PAGES_DOMAIN       : "${PAGES_DOMAIN};
-echo "YEAR               : "${YEAR};
-
 BOOTSTRAPIT_GIT_PATH=/tmp/bootstrapit;
 
 if [[ ! -e $BOOTSTRAPIT_GIT_PATH ]]; then
