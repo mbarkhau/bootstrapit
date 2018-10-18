@@ -29,8 +29,8 @@ Badges for public repositories using pypi/gitlab/codecov:
 [build_img]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/pipelines.svg
 [build_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/pipelines
 
-[codecov_img]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/coverage.svg
-[codecov_ref]: https://${GIT_REPO_NAMESPACE}.gitlab.io/${GIT_REPO_NAME}/cov
+[codecov_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/coverage.svg
+[codecov_ref]: https://${PAGES_URL}/cov
 
 [license_img]: https://img.shields.io/badge/License-MIT-blue.svg
 [license_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/LICENSE

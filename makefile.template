@@ -363,9 +363,9 @@ doc:
 ## Create python sdist and bdist_wheel distributions
 .PHONY: build_dist
 build_dist:
-	python setup.py sdist bdist_wheel
+	$(DEV_ENV_PY) setup.py sdist bdist_wheel
 	twine check dist/*
-	echo "to upload to pypi run:\n\tpython setup.py upload"
+	echo "To a PUBLIC release on pypi run:\n\t\$(DEV_ENV_PY) setup.py upload"
 
 
 ## Build docker images. Must be run when dependencies are added
