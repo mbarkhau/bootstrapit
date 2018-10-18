@@ -12,14 +12,12 @@ flake8-bugbear
 flake8-docstrings
 flake8-builtins
 flake8-comprehensions
+pylint
 mypy
 pytest
 pytest-cov
 
-# readme_renderer is not used yet,
-# but should be part of `make lint`
-readme_renderer
+twine
 
-# straitjacket isn't publicly released yet,
-# replace with pypi link once it is.
-git+https://github.com/mbarkhau/straitjacket.git@master#egg=straitjacket
+straitjacket
+pycalver

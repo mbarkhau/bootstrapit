@@ -106,7 +106,7 @@ You can also activate the default virtual environment as follows.
 
 
 ```shell
-(myproject_py36) dev@host:~/data-extraction
+(myproject_py36) dev@host:~/myproject
 $ conda env activate myproject_py36
 /home/dev/miniconda3/envs/myproject_py36/bin/python
 
@@ -186,7 +186,6 @@ only need to know about this if you want to add or change a dependency.
 ```shell
 requirements/conda.txt          # installed via conda from main or conda-forge
 requirements/pypi.txt           # installed via pip from pypi to virutal environments
-requirements/beta.txt           # installed via pip from pypi to virutal environments
 requirements/vendor.txt         # installed via pip from pypi to vendor/
 
 # These are not used on production, or staging, only
@@ -258,8 +257,6 @@ Choose a file:
   which would require compilation if they were downloaded from pypi.
 - ``pypi.txt`` is for dependencies on python packages, be they from
   pypi or git repositories.
-- ``beta.txt`` is the default place to put dependencies on
-  python packages, be they from pypi or git repositories.
 - ``vendor.txt`` is appropriate for pure python libaries which are
   written using mypy. This allows the mypy type checker to work with
   types defined in other packages
@@ -268,7 +265,7 @@ After adding a new dependency, you can run ``make update``
 
 
 ```shell
-(myproject_py36) dev@host:~/data-extraction
+(myproject_py36) dev@host:~/myproject
 $ make update
 Solving environment: done
 
@@ -276,6 +273,7 @@ Downloading and Extracting Packages
 requests-2.19.1        | 94 KB  conda-forge
 ...
 ```
+
 
 ### Vendoring
 
@@ -295,19 +293,6 @@ There are a few reasons to vendor a dependency:
 
 If you do vendor a dependency, avoid local modifications, instead
 contribute to the upstream project when possible.
-
-
-### Database Setup
-
-Most of the database initialization is done automatically, you will need to set
-up the database itself and the initial user though.
-
-TODO: mysql setup inside conda env
-
-```shell
-$ mysql -u root -p
-GRANT ALL PRIVILEGES ON *.* TO 'dataextraction'@'localhost' IDENTIFIED BY '12345';
-```
 
 
 ## Development

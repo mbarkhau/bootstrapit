@@ -1,10 +1,10 @@
-# Bootstrapit - Python Package Bootstrap Script
+# Bootstrapit - Python Package Bootstrap Scripts
 
 This repository contains setup code I use to quickly create
 new projects.
 
 I use this primarilly to create pure python libraries. It reduces
-friction to publishing high quality reusable code.
+friction to publishing reusable code.
 
 
 |                 Name                |    role   |  since  | until |
@@ -28,7 +28,7 @@ Let's assume you've written a script you would like to package
 and publish.
 
 ```
-$ bootstrapit --package-name
+$ bootstrapit --package-name myproject
 ```
 
 ## Defaults
@@ -41,5 +41,5 @@ These are some of the defaults used by a project created with
  - Testing: pytest, travis, codecov.io
  - Environment Setup: Conda
  - Code Formatting: [straitjacket](https://pypi.org/project/straitjacket/)
- - Versioning: Using [LibVer](https://pypi.org/project/libver/)
+ - Versioning: Using [PyCalVer](https://pypi.org/project/pycalver/)
 

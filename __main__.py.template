@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+import click
+import GIT_REPO_NAME
+
+
+@click.group()
+def cli() -> None:
+    """GIT_REPO_NAME cli."""
+
+
+@cli.command()
+def version() -> None:
+    """Show version number."""
+    print(f"GIT_REPO_NAME version: {GIT_REPO_NAME.__version__}")

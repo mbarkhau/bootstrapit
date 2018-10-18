@@ -1,0 +1,12 @@
+image: alpine:latest
+
+pages:
+  stage: deploy
+  script:
+  - mkdir -p public/htmlcov
+  - cp htmlcov/* public/htmlcov/
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
