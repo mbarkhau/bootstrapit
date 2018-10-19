@@ -20,23 +20,23 @@ Badges for public repositories using pypi/gitlab/codecov:
 
 
 
-[build_img]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/pipelines.svg
-[build_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/pipelines
+[build_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/pipeline.svg
+[build_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/pipelines
 
 [codecov_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/coverage.svg
 [codecov_ref]: ${PAGES_URL}cov
 
 [license_img]: https://img.shields.io/badge/License-MIT-blue.svg
-[license_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/LICENSE
+[license_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/LICENSE
 
 [mypy_img]: https://img.shields.io/badge/mypy-100%25-green.svg
 [mypy_ref]: http://mypy-lang.org/
 
 [sjfmt_img]: https://img.shields.io/badge/code%20style-%20sjfmt-f71.svg
-[sjfmt_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/
+[sjfmt_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/
 
 [pypi_img]: https://img.shields.io/pypi/v/${GIT_REPO_NAME}.svg
-[pypi_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/CHANGELOG.rst
+[pypi_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/CHANGELOG.rst
 
 [downloads_img]: https://pepy.tech/badge/${GIT_REPO_NAME}
 [downloads_ref]: https://pepy.tech/project/${GIT_REPO_NAME}
