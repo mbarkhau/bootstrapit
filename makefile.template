@@ -260,11 +260,11 @@ mypy:
 .PHONY: pylint
 pylint:
 	@printf "pylint ..\n";
-	@pylint --jobs=4 --output-format=colorized --score=no \
+	@$(DEV_ENV)/bin/pylint --jobs=4 --output-format=colorized --score=no \
 		 --disable=C0103,C0301,C0330,C0326,C0330,C0411,R0903,W1619,W1618,W1203 \
 		 --extension-pkg-whitelist=ujson,lxml,PIL,numpy,pandas,sklearn,pyblake2 \
 		 src/
-	@pylint --jobs=4 --output-format=colorized --score=no \
+	@$(DEV_ENV)/bin/pylint --jobs=4 --output-format=colorized --score=no \
 		 --disable=C0103,C0111,C0301,C0330,C0326,C0330,C0411,R0903,W1619,W1618,W1203 \
 		 --extension-pkg-whitelist=ujson,lxml,PIL,numpy,pandas,sklearn,pyblake2 \
 		 test/
