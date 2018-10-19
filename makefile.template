@@ -247,8 +247,8 @@ lint:
 
 
 ## Run mypy type checker
-.PHONY: lint
-lint:
+.PHONY: mypy
+mypy:
 	@rm -rf ".mypy_cache";
 
 	@printf "mypy ....\n"
@@ -297,7 +297,7 @@ test:
 
 ## Shortcut for make fmt lint pylint test
 .PHONY: check
-check:  fmt lint pylint test
+check:  fmt lint mypy pylint test
 
 
 ## Set environ variables in shell.
@@ -360,6 +360,19 @@ doc:
 	echo "Not Implemented"
 
 
+## Bump Version number in all files
+.PHONY: bump_version
+bump_version:
+	echo "Not Implemented"
+
+
+## Freeze dependencies of the current development env
+##   These dependencies are used for the docker image
+.PHONY: freeze
+freeze:
+	echo "Not Implemented"
+
+
 ## Create python sdist and bdist_wheel distributions
 .PHONY: build_dist
 build_dist:
@@ -377,12 +390,12 @@ build_dist:
 ##      expose on tcp://localhost:2375
 .PHONY: build_docker
 build_docker:
-	if ! [[ -f $$HOME/.ssh/${PKG_NAME}_gitlab_runner_id_rsa ]]; then \
+	@if ! [[ -f $$HOME/.ssh/${PKG_NAME}_gitlab_runner_id_rsa ]]; then \
 		echo "File not found: $$HOME/.ssh/${PKG_NAME}_gitlab_runner_id_rsa"; \
 		exit 1; \
 	fi
 
-	cp $(HOME)/.ssh/${PKG_NAME}_gitlab_runner_id_rsa build/tmp_ssh_key
+	@cp $(HOME)/.ssh/${PKG_NAME}_gitlab_runner_id_rsa build/tmp_ssh_key
 
 	DOCKER_HOST=localhost:2375 docker build \
 		--file docker_base.Dockerfile \

@@ -1,0 +1,33 @@
+stages:
+  - test
+  - build
+
+
+unit:
+  stage: test
+  image: ${DOCKER_REGISTRY_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/base:latest
+  script:
+    - make lint
+    - make mypy
+    - make test
+  coverage: '/TOTAL.*?(\d+\%)/'
+  artifacts:
+    paths:
+      - htmlcov/
+  tags:
+    - docker
+  allow_failure: false
+
+
+pages:
+  stage: build
+  script:
+    - mkdir -p public/cov
+    - cp htmlcov/* public/cov/
+  artifacts:
+    paths:
+      - public
+  tags:
+    - docker
+  only:
+  - master

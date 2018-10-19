@@ -2,11 +2,11 @@
 
 Badges for public repositories using pypi/gitlab/codecov:
 
-[![Code Style: sjfmt][style_img]][style_ref]
-[![Type Checked with mypy][mypy_img]][mypy_ref]
 [![Build Status][ci_build_img]][ci_build_ref]
 [![Code Coverage][codecov_img]][codecov_ref]
 [![MIT License][license_img]][license_ref]
+[![Code Style: sjfmt][sjfmt_img]][sjfmt_ref]
+[![Type Checked with mypy][mypy_img]][mypy_ref]
 [![PyCalVer v${YEAR}${MONTH}.0001-alpha][version_img]][version_ref]
 [![PyPI Version][pypi_img]][pypi_ref]
 [![PyPI Downloads][downloads_img]][downloads_ref]
@@ -20,20 +20,20 @@ Badges for public repositories using pypi/gitlab/codecov:
 
 
 
+[build_img]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/pipelines.svg
+[build_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/pipelines
+
+[codecov_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/coverage.svg
+[codecov_ref]: ${PAGES_URL}cov
+
+[license_img]: https://img.shields.io/badge/License-MIT-blue.svg
+[license_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/LICENSE
+
 [mypy_img]: https://img.shields.io/badge/mypy-100%25-green.svg
 [mypy_ref]: http://mypy-lang.org/
 
 [sjfmt_img]: https://img.shields.io/badge/code%20style-%20sjfmt-f71.svg
 [sjfmt_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/
-
-[build_img]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/pipelines.svg
-[build_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/pipelines
-
-[codecov_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/coverage.svg
-[codecov_ref]: https://${PAGES_URL}/cov
-
-[license_img]: https://img.shields.io/badge/License-MIT-blue.svg
-[license_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/LICENSE
 
 [pypi_img]: https://img.shields.io/pypi/v/${GIT_REPO_NAME}.svg
 [pypi_ref]: https://gitlab.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/CHANGELOG.rst

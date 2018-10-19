@@ -17,7 +17,7 @@ friction to publishing reusable code.
 You only need to do this once.
 
 ```
-$ mkdir -p $HOME/bin/ && export PATH=$HOME/bin/;
+$ mkdir -p $HOME/bin/ && export PATH=$HOME/bin/:$PATH;
 $ curl -s $HOME/bin/bootstrapit "https://raw.githubusercontent.com/mbarkhau/bootstrapit/master/bootstrapit.sh" > $HOME/bin/bootstrapit;
 $ chmod +x $HOME/bin/bootstrapit;
 ```
@@ -28,7 +28,12 @@ Let's assume you've written a script you would like to package
 and publish.
 
 ```
-$ bootstrapit --package-name myproject
+$ bootstrapit --help
+$ bootstrapit -g https://github.com/yourusername/yourpackagename \
+    --path yourpackagedir \
+    --module yourmodulename \
+    --author-name "Vandelay Industries" \
+    --author-email "info@vandelay.industries"
 ```
 
 ## Defaults

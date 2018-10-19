@@ -16,6 +16,7 @@ pylint
 mypy
 pytest
 pytest-cov
+pylint
 
 twine
 
