@@ -297,7 +297,7 @@ test:
 
 ## Shortcut for make fmt lint pylint test
 .PHONY: check
-check:  fmt lint mypy pylint test
+check:  fmt lint mypy test
 
 
 ## Set environ variables in shell.
