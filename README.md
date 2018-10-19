@@ -18,9 +18,10 @@ You only need to do this once.
 
 ```
 $ mkdir -p $HOME/bin/ && export PATH=$HOME/bin/:$PATH;
-$ curl -s $HOME/bin/bootstrapit "https://raw.githubusercontent.com/mbarkhau/bootstrapit/master/bootstrapit.sh" > $HOME/bin/bootstrapit;
+$ curl -s $HOME/bin/bootstrapit "https://gitlab.com/mbarkhau/bootstrapit/raw/master/bootstrapit.sh" > $HOME/bin/bootstrapit;
 $ chmod +x $HOME/bin/bootstrapit;
 ```
+
 
 ## Usage
 
@@ -35,6 +36,7 @@ $ bootstrapit -g https://github.com/yourusername/yourpackagename \
     --author-name "Vandelay Industries" \
     --author-email "info@vandelay.industries"
 ```
+
 
 ## Defaults
 
