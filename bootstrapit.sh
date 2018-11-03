@@ -127,11 +127,6 @@ if [[ -z $LICENSE_CLASSIFIER ]]; then
     fi
 fi
 
-cat $LICENSE_TXT_FILE \
-    | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
-    | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
-    > $PROJECT_DIR/LICENSE;
-
 if [[ -z $COPYRIGHT_STRING ]]; then
     COPYRIGHT_STRING="Copyright (c) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_CONTACT}) - ${LICENSE_NAME}";
 fi
@@ -206,6 +201,11 @@ else
     cd $OLD_PWD;
 fi
 
+cat $LICENSE_TXT_FILE \
+    | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+    | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+    > $PROJECT_DIR/LICENSE;
+
 function format_template()
 {
     cat $1 \
@@ -214,12 +214,17 @@ function format_template()
         | sed "s;\${GIT_REPO_NAMESPACE};${GIT_REPO_NAMESPACE};g" \
         | sed "s;\${GIT_REPO_NAME};${GIT_REPO_NAME};g" \
         | sed "s;\${GIT_REPO_DOMAIN};${GIT_REPO_DOMAIN};g" \
+        | sed "s;\${DEFAULT_PYTHON_VERSION};${DEFAULT_PYTHON_VERSION};g" \
         | sed "s;\${DOCKER_REGISTRY_DOMAIN};${DOCKER_REGISTRY_DOMAIN};g" \
         | sed "s;\${PAGES_DOMAIN};${PAGES_DOMAIN};g" \
         | sed "s;\${PAGES_URL};${PAGES_URL};g" \
-        | sed "s;\${AUTHOR_EMAIL};${AUTHOR_EMAIL};g" \
+        | sed "s;\${AUTHOR_CONTACT};${AUTHOR_CONTACT};g" \
         | sed "s;\${AUTHOR_NAME};${AUTHOR_NAME};g" \
         | sed "s;\${MODULE_NAME};${MODULE_NAME};g" \
+        | sed "s;\${DESCRIPTION};${DESCRIPTION};g" \
+        | sed "s;\${KEYWORDS};${KEYWORDS};g" \
+        | sed "s;\${SPDX_LICENSE_ID};${SPDX_LICENSE_ID};g" \
+        | sed "s;\${COPYRIGHT_STRING};${COPYRIGHT_STRING};g" \
         | sed "s;\${YEAR};${YEAR};g" \
         | sed "s;\${MONTH};${MONTH};g" \
         > $1.tmp;
@@ -250,7 +255,6 @@ copy_template .gitignore;
 copy_template README.md;
 copy_template CONTRIBUTING.md;
 copy_template CHANGELOG.md;
-copy_template LICENSE;
 copy_template license.header;
 copy_template stubs/README.md;
 

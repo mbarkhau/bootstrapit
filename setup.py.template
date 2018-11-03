@@ -1,20 +1,21 @@
 # This file is part of the ${MODULE_NAME} project
 # ${GIT_REPO_URL}
 #
-# (C) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_EMAIL})
-# SPDX-License-Identifier: MIT
+# (C) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_CONTACT})
+# SPDX-License-Identifier: ${SPDX_LICENSE_ID}
 
-import pathlib
+import os
 import setuptools
 
 
-def project_path(filename):
-    return (pathlib.Path(__file__).parent / filename).absolute()
+def project_path(*sub_paths):
+    project_dirpath = os.path.abspath(os.path.dirname(__file__))
+    return os.path.join(project_dirpath, *sub_paths)
 
 
 def read(filename):
-    with project_path(filename).open(mode="r") as fh:
-        return fh.read()
+    with open(project_path(filename), mode="rb") as fh:
+        return fh.read().decode("utf-8")
 
 
 install_requires = []
@@ -24,13 +25,13 @@ long_description = "\n\n".join((read("README.md"), read("CONTRIBUTING.md"), read
 
 setuptools.setup(
     name="${MODULE_NAME}",
-    license="MIT",
+    license="${SPDX_LICENSE_IDENTIFIER}",
     author="${AUTHOR_NAME}",
-    author_email="${AUTHOR_EMAIL}",
+    author_email="${AUTHOR_CONTACT}",
     url="${GIT_REPO_URL}",
     version="${YEAR}${MONTH}.1a0",
-    keywords="",
-    description="",
+    keywords="${KEYWORDS}",
+    description="${DESCRIPTION}",
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=["${MODULE_NAME}"],
@@ -47,7 +48,7 @@ setuptools.setup(
         "Environment :: Console",
         "Environment :: Other Environment",
         "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
+        "${LICENSE_CLASSIFIER}",
         "Operating System :: Unix",
         "Operating System :: POSIX",
         "Operating System :: MacOS :: MacOS X",
