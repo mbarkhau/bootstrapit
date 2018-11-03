@@ -1,7 +1,36 @@
 # Contributing
 
+<!--
+  $ pip install md-toc
+  $ md_toc -i gitlab CONTRIBUTING.md.template
+-->
 
-- [TOC]
+[](TOC)
+
+- [Contributing](#contributing)
+    - [Introduction](#introduction)
+    - [Setup](#setup)
+        - [Setup SSH keys](#setup-ssh-keys)
+        - [Setup Virtual Environments](#setup-virtual-environments)
+    - [Project Types](#project-types)
+    - [Project Layout](#project-layout)
+        - [Dependency Management](#dependency-management)
+- [These are not used on production, or staging, only](#these-are-not-used-on-production-or-staging-only)
+- [on development machines and the CI environment.](#on-development-machines-and-the-ci-environment)
+- [These are the requirements produced for specific builds. They can be](#these-are-the-requirements-produced-for-specific-builds-they-can-be)
+- [used to debug version compatatbility issues . They are generated](#used-to-debug-version-compatatbility-issues-they-are-generated)
+- [using pip freeze](#using-pip-freeze)
+        - [Vendoring](#vendoring)
+    - [Development](#development)
+        - [Linting](#linting)
+        - [Type Checking](#type-checking)
+        - [Documentation](#documentation)
+        - [Setup to run docker](#setup-to-run-docker)
+        - [PyCharm](#pycharm)
+        - [Sublime Text](#sublime-text)
+    - [Best Practices](#best-practices)
+
+[](TOC)
 
 
 ## Introduction
