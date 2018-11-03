@@ -5,7 +5,7 @@ Badges for public repositories using pypi/gitlab/codecov:
 [![Build Status][ci_build_img]][ci_build_ref]
 [![Code Coverage][codecov_img]][codecov_ref]
 [![MIT License][license_img]][license_ref]
-[![Code Style: sjfmt][sjfmt_img]][sjfmt_ref]
+[![Code Style: sjfmt][style_img]][style_ref]
 [![Type Checked with mypy][mypy_img]][mypy_ref]
 [![PyCalVer v${YEAR}${MONTH}.0001-alpha][version_img]][version_ref]
 [![PyPI Version][pypi_img]][pypi_ref]
@@ -14,9 +14,9 @@ Badges for public repositories using pypi/gitlab/codecov:
 [![Supported Python Versions][pyversions_img]][pyversions_ref]
 
 
-|               Name               |    role    |      since       | until |
-|----------------------------------|------------|------------------|-------|
-| ${AUTHOR_NAME} (${AUTHOR_EMAIL}) | maintainer | ${YEAR}-${MONTH} | -     |
+|               Name                 |    role    |      since       | until |
+|------------------------------------|------------|------------------|-------|
+| ${AUTHOR_NAME} (${AUTHOR_CONTACT}) | maintainer | ${YEAR}-${MONTH} | -     |
 
 
 
@@ -32,8 +32,8 @@ Badges for public repositories using pypi/gitlab/codecov:
 [mypy_img]: https://img.shields.io/badge/mypy-100%25-green.svg
 [mypy_ref]: http://mypy-lang.org/
 
-[sjfmt_img]: https://img.shields.io/badge/code%20style-%20sjfmt-f71.svg
-[sjfmt_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/
+[style_img]: https://img.shields.io/badge/code%20style-%20sjfmt-f71.svg
+[style_ref]: https://gitlab.com/mbarkhau/straitjacket/
 
 [pypi_img]: https://img.shields.io/pypi/v/${GIT_REPO_NAME}.svg
 [pypi_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/CHANGELOG.rst

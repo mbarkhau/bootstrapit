@@ -7,7 +7,7 @@
 
 MAKEFLAGS += --warn-undefined-variables
 SHELL := /bin/bash
-.SHELLFLAGS := -O extglob -O globstar -eo pipefail -c
+.SHELLFLAGS := -O extglob -eo pipefail -c
 .DEFAULT_GOAL := help
 .SUFFIXES:
 
@@ -31,8 +31,8 @@ PKG_NAME := $(PACKAGE_NAME)
 MODULE_SRC_PATH = src/$(PKG_NAME)/
 
 # TODO (mb 2018-09-23): Support for bash on windows
-# 	perhaps we need to install conda using this
-# 	https://repo.continuum.io/miniconda/Miniconda3-latest-Windows-x86_64.exe
+#    perhaps we need to install conda using this
+#    https://repo.continuum.io/miniconda/Miniconda3-latest-Windows-x86_64.exe
 PLATFORM = $(shell uname -s)
 
 # miniconda is shared between projects
@@ -59,21 +59,20 @@ DEV_ENV_PY := $(DEV_ENV)/bin/python
 build/envs.txt: requirements/conda.txt
 	@mkdir -p build/
 
-	@if [[ ! -f $(CONDA_BIN) ]] && [[ $(PLATFORM) == "Linux" ]]; then \
-		echo "installing miniconda ..."; \
-		wget "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh" \
-			-O build/miniconda3.sh; \
-	fi
-	@if [[ ! -f $(CONDA_BIN) ]] && [[ $(PLATFORM) == "MINGW64_NT-10.0" ]]; then \
-		curl "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh" \
-			-O build/miniconda3.sh; \
-	fi
-	@if [[ ! -f $(CONDA_BIN) ]] && [[ $(PLATFORM) == "Darwin" ]]; then \
-		wget "https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh" \
-			-O build/miniconda3.sh; \
-	fi
-
 	@if [[ ! -f $(CONDA_BIN) ]]; then \
+		if [[ $(PLATFORM) == "Linux" ]]; then \
+			echo "installing miniconda ..."; \
+			curl "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh" \
+				-O build/miniconda3.sh; \
+		fi
+		if [[ $(PLATFORM) == "MINGW64_NT-10.0" ]]; then \
+			curl "https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh" \
+				-O build/miniconda3.sh; \
+		fi
+		if [[ $(PLATFORM) == "Darwin" ]]; then \
+			curl "https://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh" \
+				-O build/miniconda3.sh; \
+		fi
 		bash build/miniconda3.sh -b -p $(CONDA_ROOT); \
 		rm build/miniconda3.sh; \
 	fi
@@ -132,21 +131,37 @@ build/deps.txt: build/envs.txt requirements/*.txt
 	@mv build/deps.txt.tmp build/deps.txt
 
 
+# Add the following 'help' target to your Makefile
+# And add help text after each target name starting with '\#\#'
+# A category can be added with @category
+
 ## This help message
 .PHONY: help
 help:
 	@printf "Available make targets for \033[97m$(PKG_NAME)\033[0m:\n";
 
-	@grep -hzoP '\n(\n##.*?)+\n(\.PHONY: [a-zA-Z_-]+)?' $(MAKEFILE_LIST) \
-		| sed -zr "s/\n\n##([^\n]*)\n/\n-INIT-\1-NL-/g" \
-		| sed -zr "s/##([^\n]*)\n/\1-NL-/g" \
-		| sed -zr "s/\.PHONY: ([^\n]+)/-FS-\1/g" \
-		| awk -F"-FS-" '{ printf "    \033[36m%-12s\033[0m %s\n", $$2, $$1 }' \
-		| sed -z "s/-INIT-//g" \
-		| sed -z "s/-NL-[^\n]/\n                  /g" \
-		| sed -z "s/-NL-//g";
-
-	@echo "";
+	@awk '{ \
+			if ($$0 ~ /^.PHONY: [a-zA-Z\-\_0-9]+$$/) { \
+				helpCommand = substr($$0, index($$0, ":") + 2); \
+				if (helpMessage) { \
+					printf "\033[36m%-20s\033[0m %s\n", \
+						helpCommand, helpMessage; \
+					helpMessage = ""; \
+				} \
+			} else if ($$0 ~ /^##/) { \
+				if (helpMessage) { \
+					helpMessage = helpMessage"\n                     "substr($$0, 3); \
+				} else { \
+					helpMessage = substr($$0, 3); \
+				} \
+			} else { \
+				if (helpMessage) { \
+					print "\n                     "helpMessage"\n" \
+				} \
+				helpMessage = ""; \
+			} \
+		}' \
+		$(MAKEFILE_LIST)
 
 	@if [[ ! -f $(DEV_ENV_PY) ]]; then \
 	echo "Missing python interpreter at $(DEV_ENV_PY) !"; \
@@ -192,7 +207,7 @@ clean:
 
 
 ## Force update of dependencies
-##   (this removes makefile markers)
+##    (this removes makefile markers)
 .PHONY: force
 force:
 	rm -f build/envs.txt
@@ -222,11 +237,12 @@ git_hooks:
 	ln -s "${PWD}/scripts/pre-push-hook.sh" "${PWD}/.git/hooks/pre-push"
 
 
-# TODO make target to publish on pypi
 
+# TODO make target to publish on pypi
 # .PHONY: publish
 # publish:
-# 	echo "Not Implemented"
+#    echo "Not Implemented"
+
 
 ## -- Development --
 
@@ -300,14 +316,14 @@ test:
 check:  fmt lint mypy test
 
 
-## Set environ variables in shell.
-## 	Usage: eval $(make env)
+## Start shell with environ variables set.
 .PHONY: env
 env:
-	@echo "export ENV=dev;";
-	@echo "export PYTHONPATH=\"src/:vendor/:$$PYTHONPATH\";";
-	@echo "export PATH=\"$(DEV_ENV)/bin/:$$PATH\";";
-	@echo "";
+	@bash -c '\
+		ENV=dev \
+		PYTHONPATH=\"src/:vendor/:$$PYTHONPATH\" \
+		PATH=\"$(DEV_ENV)/bin/:$$PATH\"; \
+		$$SHELL '
 
 
 ## Drop into an ipython shell with correct env variables set
@@ -317,7 +333,7 @@ ipy:
 		$(DEV_ENV)/bin/ipython
 
 
-## like `make test`, but with debug parameters
+## Like `make test`, but with debug parameters
 .PHONY: devtest
 devtest:
 	@rm -rf ".pytest_cache";
@@ -390,22 +406,20 @@ build_dist:
 ##      expose on tcp://localhost:2375
 .PHONY: build_docker
 build_docker:
-	@if ! [[ -f $$HOME/.ssh/${PKG_NAME}_gitlab_runner_id_rsa ]]; then \
-		echo "File not found: $$HOME/.ssh/${PKG_NAME}_gitlab_runner_id_rsa"; \
-		exit 1; \
+	@if [[ -f $$HOME/.ssh/${PKG_NAME}_gitlab_runner_id_rsa ]]; then \
+		docker build \
+			--build-arg SSH_PRIVATE_RSA_KEY="$$(cat ${HOME}/.ssh/${PKG_NAME}_gitlab_runner_id_rsa)" \
+			--file docker_base.Dockerfile \
+			--tag $(DOCKER_REGISTRY_URL)/base:latest \
+			.
+	else
+		docker build \
+			--file docker_base.Dockerfile \
+			--tag $(DOCKER_REGISTRY_URL)/base:latest \
+			.
 	fi
 
-	@cp $(HOME)/.ssh/${PKG_NAME}_gitlab_runner_id_rsa build/tmp_ssh_key
-
-	DOCKER_HOST=localhost:2375 docker build \
-		--file docker_base.Dockerfile \
-		--tag $(DOCKER_REGISTRY_URL)/base:latest \
-		.
-
-	rm build/tmp_ssh_key
-
-	DOCKER_HOST=localhost:2375 docker push \
-		$(DOCKER_REGISTRY_URL)/base:latest
+	docker push $(DOCKER_REGISTRY_URL)/base:latest
 
 
 -include makefile.extra.make

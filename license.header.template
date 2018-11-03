@@ -3,8 +3,8 @@ Individual files contain the following tag instead of the full license text.
     This file is part of the ${GIT_REPO_NAME} project
     ${GIT_REPO_URL}
 
-    (C) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_EMAIL})
-    SPDX-License-Identifier: MIT
+    ${COPYRIGHT_STRING}
+    SPDX-License-Identifier: ${SPDX_LICENSE_ID}
 
 This enables machine processing of license information based on the SPDX
 License Identifiers that are here available: https://spdx.org/licenses/

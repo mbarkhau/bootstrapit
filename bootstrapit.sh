@@ -1,169 +1,192 @@
 #!/bin/bash
 
 set -Ee -o pipefail;
-shopt -s globstar extglob;
-
-BOOTSTRAPIT_GIT_URL="https://gitlab.com/mbarkhau/bootstrapit.git/"
-
-# Argument parsing from
-# https://stackoverflow.com/a/14203146/62997
-
-POSITIONAL=()
-while [[ $# -gt 0 ]]
-do
-key="$1"
-
-case $key in
-    -g|--git-repo-url)
-    GIT_REPO_URL="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    -m|--module)
-    MODULE_NAME="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    -p|--path)
-    LOCAL_REPO_PATH="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    -a|--author-name)
-    AUTHOR_NAME="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    -e|--author-email)
-    AUTHOR_EMAIL="$2"
-    shift # past argument
-    shift # past value
-    ;;
-    *)    # unknown option
-    POSITIONAL+=("$1") # save it in an array for later
-    shift # past argument
-    ;;
-esac
-done
+shopt -s extglob nocasematch;
 
 
-set -- "${POSITIONAL[@]}" # restore positional parameters
-
-
-function usage()
-{
-    echo "bootstrapit - python project bootstrapping script"
-    echo ""
-    echo "Usage: "
-    echo ""
-    echo "    -h --help"
-    echo "    -g --git-repo-url <GIT_REPO_URL>    e.g. https://github.com/<username>/<package_name>"
-    echo "    -p --path <LOCAL_REPO_PATH>         e.g. <package_name>"
-    echo "    -m --module <MODULE_NAME>           e.g. <module_name>"
-    echo "    -a --author-name <AUTHOR_NAME>      Parsed from .gitconfig if available"
-    echo "    -e --author-email <AUTHOR_EMAIL>    Parsed from .gitconfig if available"
-    echo ""
-}
-
-while [ "$1" != "" ]; do
-    FLAG=`echo $1 | awk -F= '{print $1}'`
-    case $FLAG in
-        -h | --help)
-            usage
-            exit
-            ;;
-
-        *)
-            echo "ERROR: unknown parameter \"$FLAG\""
-            usage
-            exit 1
-            ;;
-    esac
-    shift
-done
-
-
-if [[ -n $1 ]]; then
-    echo "ERROR: Unknown argument :" $1;
+if [[ "$#" -eq 0 ]]; then
+    echo "path to bootstrapit_config.sh required";
     exit 1;
 fi
 
-if [[ ! ${GIT_REPO_URL} ]]; then
-    echo "ERROR: Missing argument -g|--git-repo-url <GIT_REPO_URL>";
+CONFIG_FILEPATH=$1;
+
+if ! [[ $CONFIG_FILEPATH =~ "bootstrapit_config.sh" ]]; then
+    echo "Invalid path $CONFIG_FILEPATH to bootstrapit_config.sh";
     exit 1;
 fi
 
-if [[ ! ${GIT_REPO_URL} =~ ^https?://[^/]+/[^/]+/[^/]+(/|.git)?$ ]]; then
-    echo "ERROR: Invalid argument '${GIT_REPO_URL}'";
+if ! [[ -f $CONFIG_FILEPATH ]]; then
+    echo "No such file: "$CONFIG_FILEPATH
     exit 1;
 fi
-
-# TODO: if repo url is not gitlab.com github.com bitbucket.com
-#   then assume a private repo and make the license propriatary
-#   /all rights reserved
 
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
 
-GIT_REPO_DOMAIN=$( echo "${GIT_REPO_URL}" | sed -E -e 's;https?://;;g' | sed -E 's;/.*$;;g' )
+source $CONFIG_FILEPATH;
+
+PROJECT_DIR=$(dirname $CONFIG_FILEPATH)
+
+declare -a required_config_param_names=(
+    "AUTHOR_NAME"
+    "AUTHOR_CONTACT"
+    "PACKAGE_NAME"
+    "GIT_REPO_NAMESPACE"
+    "GIT_REPO_DOMAIN"
+    "DESCRIPTION"
+    "KEYWORDS"
+    "LICENSE_ID"
+)
+
+for name in "${required_config_param_names}"; do
+    if [[ -z ${!name} ]]; then
+        echo "Missing parameter $name in $1";
+        exit 1;
+    fi
+done
+
+if [[ -z $MODULE_NAME ]]; then
+    MODULE_NAME=${PACKAGE_NAME};
+fi
+
+if [[ -z $DEFAULT_PYTHON_VERSION ]]; then
+    DEFAULT_PYTHON_VERSION="python=3.6";
+fi
+
+if [[ -z $SPDX_LICENSE_ID ]]; then
+    if [[ $LICENSE_ID =~ "none" ]]; then
+        SPDX_LICENSE_ID="Proprietary";
+    else
+        SPDX_LICENSE_ID=$LICENSE_ID;
+    fi
+fi
+
+
+SPDX_REPO_URL="https://raw.githubusercontent.com/spdx";
+LICENSE_TXT_URL="$SPDX_REPO_URL/license-list-data/master/text/${SPDX_LICENSE_ID}.txt";
+LICENSE_XML_URL="$SPDX_REPO_URL/license-list-XML/master/src/${SPDX_LICENSE_ID}.xml";
+
+LICENSE_TXT_FILE="/tmp/bootstrapit_$LICENSE_ID.txt"
+LICENSE_XML_FILE="/tmp/bootstrapit_$LICENSE_ID.xml"
+
+if ! [[ $LICENSE_ID =~ "none" ]]; then
+    if ! [[ -f $LICENSE_TXT_FILE ]]; then
+        echo "Downloading license text from $LICENSE_TXT_URL"
+        curl -L --silent $LICENSE_TXT_URL > $LICENSE_TXT_FILE.tmp;
+        mv $LICENSE_TXT_FILE.tmp $LICENSE_TXT_FILE;
+    fi
+    if ! [[ -f $LICENSE_XML_FILE ]]; then
+        echo "Downloading license info from $LICENSE_XML_URL"
+        curl -L --silent $LICENSE_XML_URL > $LICENSE_XML_FILE.tmp;
+        mv $LICENSE_XML_FILE.tmp $LICENSE_XML_FILE;
+    fi
+fi
+
+
+if [[ -z $LICENSE_NAME ]]; then
+    if [[ $LICENSE_ID =~ "none" ]]; then
+        LICENSE_NAME="All Rights Reserved";
+    else
+        LICENSE_NAME=$(
+             awk '{ if ($0 ~ /[^>]\s*$/ ) { printf "%s", $0 } else {printf "%s\n", $0 } }' \
+             $LICENSE_XML_FILE \
+             | grep "<license" \
+             | sed -E 's/.*name="([A-Za-z0-9[:punct:][:space:]]+)".*/\1/g' \
+             | sed 's/&#34;/"/g' \
+             | head -n 1
+        )
+    fi
+fi
+
+
+if [[ -z $LICENSE_CLASSIFIER ]]; then
+    if [[ $LICENSE_ID = "none" ]]; then
+        LICENSE_CLASSIFIER="License :: Other/Proprietary License";
+    elif [[ $LICENSE_ID =~ "mit" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: MIT License";
+    elif [[ $LICENSE_ID =~ "bsd" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: BSD License";
+    elif [[ $LICENSE_ID =~ "gpl-2.0-only" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: GNU General Public License v2 (GPLv2)";
+    elif [[ $LICENSE_ID =~ "lgpl-2.0-only" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)";
+    elif [[ $LICENSE_ID =~ "gpl-3.0-only" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: GNU General Public License v3 (GPLv3)";
+    elif [[ $LICENSE_ID =~ "agpl-3.0-only" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: GNU Affero General Public License v3";
+    elif [[ $LICENSE_ID =~ "lgpl-3.0-only" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)";
+    elif [[ $LICENSE_ID =~ "mpl-2.0" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)";
+    elif [[ $LICENSE_ID =~ "apache-2.0" ]]; then
+        LICENSE_CLASSIFIER="License :: OSI Approved :: Apache Software License";
+    else
+        echo "Invalid LICENSE_ID=\"$LICENSE_ID\". Could not determine LICENSE_CLASSIFIER.";
+        exit 1;
+    fi
+fi
+
+cat $LICENSE_TXT_FILE \
+    | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+    | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+    > $PROJECT_DIR/LICENSE;
+
+if [[ -z $COPYRIGHT_STRING ]]; then
+    COPYRIGHT_STRING="Copyright (c) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_CONTACT}) - ${LICENSE_NAME}";
+fi
+
+if [[ -z $IS_PUBLIC ]]; then
+    IS_PUBLIC=$( echo $GIT_REPO_DOMAIN | grep -c -E '(gitlab\.com|github\.com|bitbucket\.org)' );
+fi
+
+if [[ -z $PAGES_DOMAIN ]]; then
+    if [[ $GIT_REPO_DOMAIN == "gitlab.com" ]]; then
+        PAGES_DOMAIN=gitlab.io;
+    elif [[ $GIT_REPO_DOMAIN == "github.com" ]]; then
+        PAGES_DOMAIN=github.io;
+    elif [[ $GIT_REPO_DOMAIN == "bitbucket.org" ]]; then
+        PAGES_DOMAIN=bitbucket.io;
+    else
+        PAGES_DOMAIN=gitlab-pages.$GIT_REPO_DOMAIN;
+    fi
+fi
+
+if [[ -z $DOCKER_REGISTRY_DOMAIN ]]; then
+    if [[ $REPO_DOMAIN == "gitlab.com" ]]; then
+        DOCKER_REGISTRY_DOMAIN=registry.gitlab.com;
+    else
+        DOCKER_REGISTRY_DOMAIN=hub.docker.com;
+    fi
+fi
+
+if [[ -z $PAGES_URL ]]; then
+    PAGES_URL="https://${GIT_REPO_NAMESPACE}.${PAGES_DOMAIN}/${PACKAGE_NAME}/"
+fi
+
+if [[ -z $GIT_REPO_URL ]]; then
+    GIT_REPO_URL=https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${PACKAGE_NAME}
+elif [[ ! ${GIT_REPO_URL} =~ ^https?://[^/]+/[^/]+/[^/]+(/|.git)?$ ]]; then
+    echo "ERROR: Invalid argument for '${GIT_REPO_URL}'";
+    exit 1;
+fi
+
+if [[ -z $DOCKER_ALPINE_BASE_IMAGE ]]; then
+    DOCKER_ALPINE_BASE_IMAGE=frolvlad/alpine-glibc
+fi
+
+if [[ -z ${MODULE_NAME} ]]; then
+    MODULE_NAME=$( echo "${PACKAGE_NAME}" | tr '[:upper:]' '[:lower:]' | sed -E -e 's;-;_;g'; );
+fi
+
+BOOTSTRAPIT_GIT_URL="https://gitlab.com/mbarkhau/bootstrapit.git/"
+
 GIT_REPO_PATH=$( echo "${GIT_REPO_URL}" | sed -E -e 's;https?://[^/]+/;;g' | sed -E 's;(/|.git)$;;g' )
-GIT_REPO_NAMESPACE=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;/[A-Za-z_-]+$;;g' )
 GIT_REPO_NAME=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;^[A-Za-z_-]+/;;g' )
 
-if [[ ! ${LOCAL_REPO_PATH} ]]; then
-    LOCAL_REPO_PATH=$(GIT_REPO_NAME)
-fi
-
-if [[ ! ${MODULE_NAME} ]]; then
-    MODULE_NAME=$( echo "$GIT_REPO_NAME" | sed -E -e 's;-;_;g');
-fi
-
-PAGES_DOMAIN="pages.${GIT_REPO_DOMAIN}"
-DOCKER_REGISTRY_DOMAIN="registry.${GIT_REPO_DOMAIN}";
-
-if [[ ${GIT_REPO_DOMAIN} == "github.com" ]]; then
-    PAGES_DOMAIN="github.io";
-fi
-
-if [[ ${GIT_REPO_DOMAIN} == "gitlab.com" ]]; then
-    PAGES_DOMAIN="gitlab.io";
-fi
-
-if [[ ${GIT_REPO_DOMAIN} == "git2.fastbill.com" ]]; then
-    PAGES_DOMAIN="gitlab-pages.fastbill.com";
-    DOCKER_REGISTRY_DOMAIN="docker.fastbill.com"
-fi
-
-PAGES_URL="https://${GIT_REPO_NAMESPACE}.${PAGES_DOMAIN}/${GIT_REPO_NAME}/"
-
-
-if [[ -f "${LOCAL_REPO_PATH}/.git/config" ]]; then
-    echo "parsing author info from ${LOCAL_REPO_PATH}/.git/config"
-    AUTHOR_NAME=${AUTHOR_NAME:=$(grep -oP '(?<=name = ).*' ${LOCAL_REPO_PATH}/.git/config)} || true;
-    AUTHOR_EMAIL=${AUTHOR_EMAIL:=$(grep -oP '(?<=email = ).*' ${LOCAL_REPO_PATH}/.git/config)} || true;
-fi
-
-if [[ -f "${HOME}/.gitconfig" ]]; then
-    echo "parsing author info from ${HOME}/.gitconfig";
-    AUTHOR_NAME=${AUTHOR_NAME:=$(grep -oP '(?<=name = ).*' ${HOME}/.gitconfig)};
-    AUTHOR_EMAIL=${AUTHOR_EMAIL:=$(grep -oP '(?<=email = ).*' ${HOME}/.gitconfig)};
-fi
-
-if [[ ! -n ${AUTHOR_NAME} ]]; then
-    echo "Missing argument -a|--author-name <AUTHOR_NAME>"
-    exit 1
-fi
-
-if [[ ! -n ${AUTHOR_EMAIL} ]]; then
-    echo "Missing argument -e|--author-email <AUTHOR_EMAIL>"
-    exit 1
-fi
-
-mkdir -p "${LOCAL_REPO_PATH}";
-
-if [[ -f ${LOCAL_REPO_PATH}/.git/config ]]; then
+if [[ -f ${PROJECT_DIR}/.git/config ]]; then
     OLD_PWD=${PWD}
-    cd ${LOCAL_REPO_PATH};
+    cd ${PROJECT_DIR};
     if [[ $( git diff -s --exit-code || echo $? ) -gt 0 ]]; then
         echo "Not updating existing repository with uncomitted changes."
         echo "This is to avoid overwriting non comitted local changes."
@@ -206,23 +229,24 @@ function format_template()
 function copy_template()
 {
     if [[ -z ${2} ]]; then
-        dest_path=${LOCAL_REPO_PATH}/$1;
+        dest_path=${PROJECT_DIR}/$1;
     else
-        dest_path=${LOCAL_REPO_PATH}/$2;
+        dest_path=${PROJECT_DIR}/$2;
     fi;
     cat ${BOOTSTRAPIT_GIT_PATH}/$1.template > ${dest_path};
 
     format_template ${dest_path};
 }
 
-mkdir -p "${LOCAL_REPO_PATH}/test/";
-mkdir -p "${LOCAL_REPO_PATH}/vendor/";
-mkdir -p "${LOCAL_REPO_PATH}/scripts/";
-mkdir -p "${LOCAL_REPO_PATH}/stubs/";
-mkdir -p "${LOCAL_REPO_PATH}/src/";
-mkdir -p "${LOCAL_REPO_PATH}/requirements/";
-mkdir -p "${LOCAL_REPO_PATH}/src/${MODULE_NAME}";
+mkdir -p "${PROJECT_DIR}/test/";
+mkdir -p "${PROJECT_DIR}/vendor/";
+mkdir -p "${PROJECT_DIR}/scripts/";
+mkdir -p "${PROJECT_DIR}/stubs/";
+mkdir -p "${PROJECT_DIR}/src/";
+mkdir -p "${PROJECT_DIR}/requirements/";
+mkdir -p "${PROJECT_DIR}/src/${MODULE_NAME}";
 
+copy_template .gitignore;
 copy_template README.md;
 copy_template CONTRIBUTING.md;
 copy_template CHANGELOG.md;
@@ -251,19 +275,19 @@ copy_template scripts/pre-push-hook.sh;
 
 copy_template __main__.py "src/${MODULE_NAME}/__main__.py";
 copy_template __init__.py "src/${MODULE_NAME}/__init__.py";
-touch "${LOCAL_REPO_PATH}/test/__init__.py";
+touch "${PROJECT_DIR}/test/__init__.py";
 
-chmod +x "${LOCAL_REPO_PATH}/src/${MODULE_NAME}/__main__.py";
-chmod +x "${LOCAL_REPO_PATH}/scripts/update_conda_env_deps.sh";
-chmod +x "${LOCAL_REPO_PATH}/scripts/setup_conda_envs.sh";
-chmod +x "${LOCAL_REPO_PATH}/scripts/pre-push-hook.sh";
+chmod +x "${PROJECT_DIR}/src/${MODULE_NAME}/__main__.py";
+chmod +x "${PROJECT_DIR}/scripts/update_conda_env_deps.sh";
+chmod +x "${PROJECT_DIR}/scripts/setup_conda_envs.sh";
+chmod +x "${PROJECT_DIR}/scripts/pre-push-hook.sh";
 
-head -n 7 ${LOCAL_REPO_PATH}/license.header \
+head -n 7 ${PROJECT_DIR}/license.header \
     | tail -n +3 \
     | sed -re 's/(^   |^$)/#/g' \
     > .py_license.header;
 
-src_files=${LOCAL_REPO_PATH}/src/**/*.py
+src_files=${PROJECT_DIR}/src/**/*.py
 
 for src_file in $src_files; do
     if grep -q -E '^# SPDX-License-Identifier' $src_file; then
