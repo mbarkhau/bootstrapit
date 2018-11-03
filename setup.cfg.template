@@ -55,3 +55,24 @@ exclude =
 addopts = --doctest-modules
 
 
+[pycalver]
+current_version = v${YEAR}${MONTH}.0001-alpha
+commit = True
+tag = True
+
+[pycalver:file:setup.cfg]
+patterns =
+    current_version = {version}
+
+[pycalver:file:setup.py]
+patterns =
+    version="{pep440_version}"
+
+[pycalver:file:src/${MODULE_NAME}/__init__.py]
+patterns =
+    __version__ = "{version}"
+
+[pycalver:file:README.md]
+patterns =
+    [PyCalVer {calver}{build}-{release}]
+    img.shields.io/badge/PyCalVer-{calver}{build}--{release}-blue

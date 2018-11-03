@@ -148,7 +148,7 @@ if [[ -z $PAGES_DOMAIN ]]; then
 fi
 
 if [[ -z $DOCKER_REGISTRY_DOMAIN ]]; then
-    if [[ $REPO_DOMAIN == "gitlab.com" ]]; then
+    if [[ $GIT_REPO_DOMAIN == "gitlab.com" ]]; then
         DOCKER_REGISTRY_DOMAIN=registry.gitlab.com;
     else
         DOCKER_REGISTRY_DOMAIN=hub.docker.com;
@@ -224,6 +224,7 @@ function format_template()
         | sed "s;\${DESCRIPTION};${DESCRIPTION};g" \
         | sed "s;\${KEYWORDS};${KEYWORDS};g" \
         | sed "s;\${SPDX_LICENSE_ID};${SPDX_LICENSE_ID};g" \
+        | sed "s;\${LICENSE_CLASSIFIER};${LICENSE_CLASSIFIER};g" \
         | sed "s;\${COPYRIGHT_STRING};${COPYRIGHT_STRING};g" \
         | sed "s;\${YEAR};${YEAR};g" \
         | sed "s;\${MONTH};${MONTH};g" \

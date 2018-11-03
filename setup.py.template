@@ -25,7 +25,7 @@ long_description = "\n\n".join((read("README.md"), read("CONTRIBUTING.md"), read
 
 setuptools.setup(
     name="${MODULE_NAME}",
-    license="${SPDX_LICENSE_IDENTIFIER}",
+    license="${SPDX_LICENSE_ID}",
     author="${AUTHOR_NAME}",
     author_email="${AUTHOR_CONTACT}",
     url="${GIT_REPO_URL}",
