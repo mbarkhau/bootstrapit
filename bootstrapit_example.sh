@@ -64,7 +64,7 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 
 # PAGES_URL="https://${NAMESPACE}.${PAGES_DOMAIN}/${PACKAGE_NAME}/"
 
-# DOCKER_ALPINE_BASE_IMAGE=frolvlad/alpine-glibc
+# DOCKER_BASE_IMAGE=frolvlad/alpine-glibc
 
 ## Download and run the actual update script
 

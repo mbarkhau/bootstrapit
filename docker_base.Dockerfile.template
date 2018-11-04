@@ -7,7 +7,7 @@
 #   final       : the final image containing only the required environment files,
 #                 and none of the infrastructure required to generate them.
 
-FROM ${DOCKER_ALPINE_BASE_IMAGE} AS alpine_base
+FROM ${DOCKER_BASE_IMAGE} AS alpine_base
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
