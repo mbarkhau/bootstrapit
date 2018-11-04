@@ -3,30 +3,8 @@
 set -Ee -o pipefail;
 shopt -s extglob nocasematch;
 
-
-if [[ "$#" -eq 0 ]]; then
-    echo "path to bootstrapit_config.sh required";
-    exit 1;
-fi
-
-CONFIG_FILEPATH=$1;
-
-if ! [[ $CONFIG_FILEPATH =~ "bootstrapit_config.sh" ]]; then
-    echo "Invalid path $CONFIG_FILEPATH to bootstrapit_config.sh";
-    exit 1;
-fi
-
-if ! [[ -f $CONFIG_FILEPATH ]]; then
-    echo "No such file: "$CONFIG_FILEPATH
-    exit 1;
-fi
-
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
-
-source $CONFIG_FILEPATH;
-
-PROJECT_DIR=$(dirname $CONFIG_FILEPATH)
 
 declare -a required_config_param_names=(
     "AUTHOR_NAME"
@@ -69,6 +47,7 @@ LICENSE_XML_URL="$SPDX_REPO_URL/license-list-XML/master/src/${SPDX_LICENSE_ID}.x
 
 LICENSE_TXT_FILE="/tmp/bootstrapit_$LICENSE_ID.txt"
 LICENSE_XML_FILE="/tmp/bootstrapit_$LICENSE_ID.xml"
+
 
 if ! [[ $LICENSE_ID =~ "none" ]]; then
     if ! [[ -f $LICENSE_TXT_FILE ]]; then
