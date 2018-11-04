@@ -25,6 +25,7 @@ old_md5=$( cat $PROJECT_DIR/scripts/bootstrapit_update.sh | $md5sum );
 new_md5=$( cat $BOOTSTRAPIT_GIT_PATH/scripts/bootstrapit_update.sh | $md5sum );
 
 if [[ $old_md5 != $new_md5 ]]; then
+    # Copy the updated file, run it and exit the current execution.
     cp "${BOOTSTRAPIT_GIT_PATH}/scripts/bootstrapit_update.sh" \
         "${PROJECT_DIR}/scripts/";
     source "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
@@ -188,8 +189,8 @@ if [[ -f ${PROJECT_DIR}/.git/config ]]; then
     OLD_PWD=${PWD}
     cd ${PROJECT_DIR};
     if [[ $( git diff -s --exit-code || echo $? ) -gt 0 ]]; then
-        echo "Not updating existing repository with uncomitted changes."
-        echo "This is to avoid overwriting non comitted local changes."
+        echo "ABORTING!: Your repo has local changes which are not comitted."
+        echo "To avoid overwriting these changes, please commit your changes."
         exit 1;
     fi
     cd $OLD_PWD;

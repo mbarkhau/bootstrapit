@@ -6,8 +6,8 @@
 #  - setup.py fields
 #  - README.md contributor info
 # This can also be a company or organization name and email
-AUTHOR_NAME="Manuel Barkhau"
-AUTHOR_CONTACT="@mbarkhau"
+AUTHOR_NAME="Vandelay Industries"
+AUTHOR_CONTACT="info@vandelay.industries"
 
 KEYWORDS="keywords used on pypi"
 DESCRIPTION="Example description."
@@ -31,9 +31,8 @@ LICENSE_ID="MIT"
 
 PACKAGE_NAME="mypackagename"
 # MODULE_NAME="${PACKAGE_NAME}"
-
+GIT_REPO_NAMESPACE="vandelay"
 GIT_REPO_DOMAIN="gitlab.com"
-GIT_REPO_NAMESPACE="mbarkhau"
 
 DEFAULT_PYTHON_VERSION="python=3.6"
 
@@ -67,6 +66,7 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 
 # DOCKER_ALPINE_BASE_IMAGE=frolvlad/alpine-glibc
 
+## Download and run the actual update script
 
 PROJECT_DIR=$(dirname $0)
 
