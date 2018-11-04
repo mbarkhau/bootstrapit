@@ -320,7 +320,7 @@ env:
 	@bash -c '\
 		ENV=dev \
 		PYTHONPATH=\"src/:vendor/:$$PYTHONPATH\" \
-		PATH=\"$(DEV_ENV)/bin/:$$PATH\"; \
+		PATH=\"$(DEV_ENV)/bin/:$$PATH\" \
 		$$SHELL '
 
 
