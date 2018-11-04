@@ -14,7 +14,7 @@ projects.
 The entry point is a script called `bootstrapit.sh`, which you can add
 to your project like this:
 
-```session
+```shell
 $ cd myproject
 $ curl -s "https://gitlab.com/mbarkhau/bootstrapit/raw/master/bootstrapit_example.sh" \
     > bootstrapit.sh
