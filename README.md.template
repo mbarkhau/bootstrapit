@@ -2,7 +2,7 @@
 
 Badges for public repositories using pypi/gitlab/codecov:
 
-[![Build Status][ci_build_img]][ci_build_ref]
+[![Build Status][build_img]][build_ref]
 [![Code Coverage][codecov_img]][codecov_ref]
 [![MIT License][license_img]][license_ref]
 [![Code Style: sjfmt][style_img]][style_ref]
