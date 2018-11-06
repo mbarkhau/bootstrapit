@@ -140,7 +140,7 @@ if [[ -z $COPYRIGHT_STRING ]]; then
 fi
 
 if [[ -z $IS_PUBLIC ]]; then
-    IS_PUBLIC=$( echo $GIT_REPO_DOMAIN | grep -c -E '(gitlab\.com|github\.com|bitbucket\.org)' );
+    IS_PUBLIC=$( echo $GIT_REPO_DOMAIN | grep -c -E '(gitlab\.com|github\.com|bitbucket\.org)' || true );
 fi
 
 if [[ -z $PAGES_DOMAIN ]]; then
@@ -196,10 +196,14 @@ if [[ -f ${PROJECT_DIR}/.git/config ]]; then
     cd $OLD_PWD;
 fi
 
-cat $LICENSE_TXT_FILE \
-    | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
-    | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
-    > $PROJECT_DIR/LICENSE;
+if [[ $LICENSE_ID =~ "none" ]]; then
+	echo $COPYRIGHT_STRING > $PROJECT_DIR/LICENSE;
+else
+	cat $LICENSE_TXT_FILE \
+	    | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+	    | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+	    > $PROJECT_DIR/LICENSE;
+fi
 
 function format_template()
 {
