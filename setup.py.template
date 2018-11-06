@@ -1,7 +1,7 @@
 # This file is part of the ${MODULE_NAME} project
 # ${GIT_REPO_URL}
 #
-# (C) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_CONTACT})
+# ${COPYRIGHT_STRING}
 # SPDX-License-Identifier: ${SPDX_LICENSE_ID}
 
 import os
