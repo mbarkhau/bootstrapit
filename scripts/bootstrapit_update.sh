@@ -3,8 +3,16 @@
 set -Ee -o pipefail;
 shopt -s extglob nocasematch;
 
-md5sum=$(which md5sum || which md5)
-
+if [[ -f ${PROJECT_DIR}/.git/config ]]; then
+    OLD_PWD=${PWD}
+    cd ${PROJECT_DIR};
+    if [[ $( git diff -s --exit-code || echo $? ) -gt 0 ]]; then
+        echo "ABORTING!: Your repo has local changes which are not comitted."
+        echo "To avoid overwriting these changes, please commit your changes."
+        exit 1;
+    fi
+    cd $OLD_PWD;
+fi
 
 BOOTSTRAPIT_GIT_URL="https://gitlab.com/mbarkhau/bootstrapit.git/"
 
@@ -21,6 +29,8 @@ else
     cd $OLD_PWD;
 fi
 
+md5sum=$(which md5sum || which md5)
+
 old_md5=$( cat $PROJECT_DIR/scripts/bootstrapit_update.sh | $md5sum );
 new_md5=$( cat $BOOTSTRAPIT_GIT_PATH/scripts/bootstrapit_update.sh | $md5sum );
 
@@ -28,6 +38,8 @@ if [[ $old_md5 != $new_md5 ]]; then
     # Copy the updated file, run it and exit the current execution.
     cp "${BOOTSTRAPIT_GIT_PATH}/scripts/bootstrapit_update.sh" \
         "${PROJECT_DIR}/scripts/";
+    git add "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
+    git commit --no-verify -m "auto update of scripts/bootstrapit_update.sh"
     source "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
     exit 0;
 fi
@@ -184,17 +196,6 @@ fi
 
 GIT_REPO_PATH=$( echo "${GIT_REPO_URL}" | sed -E -e 's;https?://[^/]+/;;g' | sed -E 's;(/|.git)$;;g' )
 GIT_REPO_NAME=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;^[A-Za-z_-]+/;;g' )
-
-if [[ -f ${PROJECT_DIR}/.git/config ]]; then
-    OLD_PWD=${PWD}
-    cd ${PROJECT_DIR};
-    if [[ $( git diff -s --exit-code || echo $? ) -gt 0 ]]; then
-        echo "ABORTING!: Your repo has local changes which are not comitted."
-        echo "To avoid overwriting these changes, please commit your changes."
-        exit 1;
-    fi
-    cd $OLD_PWD;
-fi
 
 if [[ $LICENSE_ID =~ "none" ]]; then
 	echo $COPYRIGHT_STRING > $PROJECT_DIR/LICENSE;
