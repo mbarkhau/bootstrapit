@@ -3,10 +3,10 @@
 set -Ee -o pipefail;
 shopt -s extglob nocasematch;
 
-if [[ -f ${PROJECT_DIR}/.git/config ]]; then
-    OLD_PWD="${PWD}"
-    cd "${PROJECT_DIR}";
-    if [[ $( git diff -s --exit-code || echo $? ) -gt 0 ]]; then
+if [[ -f "$PROJECT_DIR/.git/config" ]]; then
+    OLD_PWD="$PWD"
+    cd "$PROJECT_DIR";
+    if [[ $( git diff -s --exit-code || echo "$?" ) -gt 0 ]]; then
         echo "ABORTING!: Your repo has local changes which are not comitted."
         echo "To avoid overwriting these changes, please commit your changes."
         exit 1;
@@ -20,11 +20,11 @@ BOOTSTRAPIT_GIT_PATH=/tmp/bootstrapit;
 
 echo "Updating from $BOOTSTRAPIT_GIT_URL";
 
-if [[ ! -e $BOOTSTRAPIT_GIT_PATH ]]; then
-    git clone ${BOOTSTRAPIT_GIT_URL} ${BOOTSTRAPIT_GIT_PATH};
+if [[ ! -e "$BOOTSTRAPIT_GIT_PATH" ]]; then
+    git clone "$BOOTSTRAPIT_GIT_URL" "$BOOTSTRAPIT_GIT_PATH";
 else
-    OLD_PWD="${PWD}";
-    cd ${BOOTSTRAPIT_GIT_PATH};
+    OLD_PWD="$PWD";
+    cd "$BOOTSTRAPIT_GIT_PATH";
     git pull --quiet;
     cd "$OLD_PWD";
 fi
@@ -34,12 +34,13 @@ md5sum=$(which md5sum || which md5)
 old_md5=$( cat "$PROJECT_DIR/scripts/bootstrapit_update.sh" | $md5sum );
 new_md5=$( cat "$BOOTSTRAPIT_GIT_PATH/scripts/bootstrapit_update.sh" | $md5sum );
 
-if [[ $old_md5 != $new_md5 ]]; then
+if [[ "$old_md5" != "$new_md5" ]]; then
     # Copy the updated file, run it and exit the current execution.
     cp "${BOOTSTRAPIT_GIT_PATH}/scripts/bootstrapit_update.sh" \
         "${PROJECT_DIR}/scripts/";
     git add "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
     git commit --no-verify -m "auto update of scripts/bootstrapit_update.sh"
+    # shellcheck source=scripts/bootstrapit_update.sh
     source "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
     exit 0;
 fi
@@ -58,7 +59,7 @@ declare -a required_config_param_names=(
     "LICENSE_ID"
 )
 
-for name in "${required_config_param_names}"; do
+for name in "${required_config_param_names[@]}"; do
     if [[ -z ${!name} ]]; then
         echo "Missing parameter $name in $1";
         exit 1;
@@ -74,7 +75,7 @@ if [[ -z $DEFAULT_PYTHON_VERSION ]]; then
 fi
 
 if [[ -z $SPDX_LICENSE_ID ]]; then
-    if [[ $LICENSE_ID =~ "none" ]]; then
+    if [[ $LICENSE_ID =~ none ]]; then
         SPDX_LICENSE_ID="Proprietary";
     else
         SPDX_LICENSE_ID=$LICENSE_ID;
@@ -90,7 +91,7 @@ LICENSE_TXT_FILE="/tmp/bootstrapit_$LICENSE_ID.txt"
 LICENSE_XML_FILE="/tmp/bootstrapit_$LICENSE_ID.xml"
 
 
-if ! [[ $LICENSE_ID =~ "none" ]]; then
+if ! [[ $LICENSE_ID =~ none ]]; then
     if ! [[ -f "$LICENSE_TXT_FILE" ]]; then
         echo "Downloading license text from $LICENSE_TXT_URL"
         curl -L --silent "$LICENSE_TXT_URL" > "$LICENSE_TXT_FILE.tmp";
@@ -105,12 +106,12 @@ fi
 
 
 if [[ -z $LICENSE_NAME ]]; then
-    if [[ $LICENSE_ID =~ "none" ]]; then
+    if [[ $LICENSE_ID =~ none ]]; then
         LICENSE_NAME="All Rights Reserved";
     else
         LICENSE_NAME=$(
              awk '{ if ($0 ~ /[^>]\s*$/ ) { printf "%s", $0 } else {printf "%s\n", $0 } }' \
-             $LICENSE_XML_FILE \
+             "$LICENSE_XML_FILE" \
              | grep "<license" \
              | sed -E 's/.*name="([A-Za-z0-9[:punct:][:space:]]+)".*/\1/g' \
              | sed 's/&#34;/"/g' \
@@ -121,25 +122,25 @@ fi
 
 
 if [[ -z $LICENSE_CLASSIFIER ]]; then
-    if [[ $LICENSE_ID = "none" ]]; then
+    if [[ $LICENSE_ID =~ none ]]; then
         LICENSE_CLASSIFIER="License :: Other/Proprietary License";
-    elif [[ $LICENSE_ID =~ "mit" ]]; then
+    elif [[ $LICENSE_ID =~ mit ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: MIT License";
-    elif [[ $LICENSE_ID =~ "bsd" ]]; then
+    elif [[ $LICENSE_ID =~ bsd ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: BSD License";
-    elif [[ $LICENSE_ID =~ "gpl-2.0-only" ]]; then
+    elif [[ $LICENSE_ID =~ gpl-2.0-only ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: GNU General Public License v2 (GPLv2)";
-    elif [[ $LICENSE_ID =~ "lgpl-2.0-only" ]]; then
+    elif [[ $LICENSE_ID =~ lgpl-2.0-only ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: GNU Lesser General Public License v2 (LGPLv2)";
-    elif [[ $LICENSE_ID =~ "gpl-3.0-only" ]]; then
+    elif [[ $LICENSE_ID =~ gpl-3.0-only ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: GNU General Public License v3 (GPLv3)";
-    elif [[ $LICENSE_ID =~ "agpl-3.0-only" ]]; then
+    elif [[ $LICENSE_ID =~ agpl-3.0-only ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: GNU Affero General Public License v3";
-    elif [[ $LICENSE_ID =~ "lgpl-3.0-only" ]]; then
+    elif [[ $LICENSE_ID =~ lgpl-3.0-only ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)";
-    elif [[ $LICENSE_ID =~ "mpl-2.0" ]]; then
+    elif [[ $LICENSE_ID =~ mpl-2.0 ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)";
-    elif [[ $LICENSE_ID =~ "apache-2.0" ]]; then
+    elif [[ $LICENSE_ID =~ apache-2.0 ]]; then
         LICENSE_CLASSIFIER="License :: OSI Approved :: Apache Software License";
     else
         echo "Invalid LICENSE_ID=\"$LICENSE_ID\". Could not determine LICENSE_CLASSIFIER.";
@@ -147,67 +148,67 @@ if [[ -z $LICENSE_CLASSIFIER ]]; then
     fi
 fi
 
-if [[ -z $COPYRIGHT_STRING ]]; then
+if [[ -z "$COPYRIGHT_STRING" ]]; then
     COPYRIGHT_STRING="Copyright (c) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_CONTACT}) - ${LICENSE_NAME}";
 fi
 
-if [[ -z $SETUP_PY_LICENSE ]]; then
-    if [[ $LICENSE_ID =~ "none" ]]; then
-        SETUP_PY_LICENSE=$COPYRIGHT_STRING;
+if [[ -z "$SETUP_PY_LICENSE" ]]; then
+    if [[ $LICENSE_ID =~ none ]]; then
+        SETUP_PY_LICENSE="$COPYRIGHT_STRING";
     else
         SETUP_PY_LICENSE=$SPDX_LICENSE_ID;
     fi
 fi
 
 
-if [[ -z $IS_PUBLIC ]]; then
-    IS_PUBLIC=$( echo $GIT_REPO_DOMAIN | grep -c -E '(gitlab\.com|github\.com|bitbucket\.org)' || true );
+if [[ -z "$IS_PUBLIC" ]]; then
+    IS_PUBLIC=$( echo "$GIT_REPO_DOMAIN" | grep -c -E '(gitlab\.com|github\.com|bitbucket\.org)' || true );
 fi
 
-if [[ -z $PAGES_DOMAIN ]]; then
-    if [[ $GIT_REPO_DOMAIN == "gitlab.com" ]]; then
+if [[ -z "$PAGES_DOMAIN" ]]; then
+    if [[ "$GIT_REPO_DOMAIN" == "gitlab.com" ]]; then
         PAGES_DOMAIN=gitlab.io;
-    elif [[ $GIT_REPO_DOMAIN == "github.com" ]]; then
+    elif [[ "$GIT_REPO_DOMAIN" == "github.com" ]]; then
         PAGES_DOMAIN=github.io;
-    elif [[ $GIT_REPO_DOMAIN == "bitbucket.org" ]]; then
+    elif [[ "$GIT_REPO_DOMAIN" == "bitbucket.org" ]]; then
         PAGES_DOMAIN=bitbucket.io;
     else
-        PAGES_DOMAIN=gitlab-pages.$GIT_REPO_DOMAIN;
+        PAGES_DOMAIN="gitlab-pages.$GIT_REPO_DOMAIN";
     fi
 fi
 
-if [[ -z $PAGES_URL ]]; then
+if [[ -z "$PAGES_URL" ]]; then
     PAGES_URL="https://${GIT_REPO_NAMESPACE}.${PAGES_DOMAIN}/${PACKAGE_NAME}/"
 fi
 
-if [[ -z $DOCKER_REGISTRY_DOMAIN ]]; then
-    if [[ $GIT_REPO_DOMAIN == "gitlab.com" ]]; then
+if [[ -z "$DOCKER_REGISTRY_DOMAIN" ]]; then
+    if [[ "$GIT_REPO_DOMAIN" == "gitlab.com" ]]; then
         DOCKER_REGISTRY_DOMAIN=registry.gitlab.com;
     else
         DOCKER_REGISTRY_DOMAIN=hub.docker.com;
     fi
 fi
 
-if [[ -z $DOCKER_BASE_IMAGE ]]; then
+if [[ -z "$DOCKER_BASE_IMAGE" ]]; then
     DOCKER_BASE_IMAGE=frolvlad/alpine-glibc
 fi
 
-if [[ -z ${MODULE_NAME} ]]; then
+if [[ -z "$MODULE_NAME" ]]; then
     MODULE_NAME=$( echo "${PACKAGE_NAME}" | tr '[:upper:]' '[:lower:]' | sed -E -e 's;-;_;g'; );
 fi
 
-if [[ -z $GIT_REPO_URL ]]; then
+if [[ -z "$GIT_REPO_URL" ]]; then
     GIT_REPO_URL=https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${PACKAGE_NAME}
-elif [[ ! ${GIT_REPO_URL} =~ ^https?://[^/]+/[^/]+/[^/]+(/|.git)?$ ]]; then
+elif [[ ! "$GIT_REPO_URL" =~ ^https?://[^/]+/[^/]+/[^/]+(/|.git)?$ ]]; then
     echo "ERROR: Invalid argument for '${GIT_REPO_URL}'";
     exit 1;
 fi
 
-GIT_REPO_PATH=$( echo "${GIT_REPO_URL}" | sed -E -e 's;https?://[^/]+/;;g' | sed -E 's;(/|.git)$;;g' )
-GIT_REPO_NAME=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;^[A-Za-z_-]+/;;g' )
+GIT_REPO_PATH=$( echo "$GIT_REPO_URL" | sed -E -e 's;https?://[^/]+/;;g' | sed -E 's;(/|.git)$;;g' )
+GIT_REPO_NAME=$( echo "$GIT_REPO_PATH" | sed -E -e 's;^[A-Za-z_-]+/;;g' )
 
-if [[ $LICENSE_ID =~ "none" ]]; then
-    echo $COPYRIGHT_STRING > "$PROJECT_DIR/LICENSE";
+if [[ "$LICENSE_ID" =~ "none" ]]; then
+    echo "$COPYRIGHT_STRING" > "$PROJECT_DIR/LICENSE";
 else
     cat "$LICENSE_TXT_FILE" \
         | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
@@ -217,7 +218,7 @@ fi
 
 function format_template()
 {
-    cat $1 \
+    cat "$1" \
         | sed "s;\${GIT_REPO_URL};${GIT_REPO_URL};g" \
         | sed "s;\${GIT_REPO_PATH};${GIT_REPO_PATH};g" \
         | sed "s;\${GIT_REPO_NAMESPACE};${GIT_REPO_NAMESPACE};g" \
@@ -239,11 +240,11 @@ function format_template()
         | sed "s;\${COPYRIGHT_STRING};${COPYRIGHT_STRING};g" \
         | sed "s;\${YEAR};${YEAR};g" \
         | sed "s;\${MONTH};${MONTH};g" \
-        > $1.tmp;
-    mv $1.tmp $1;
+        > "$1.tmp";
+    mv "$1.tmp" "$1";
 }
 
-if [[ -z $IGNORE_IF_EXISTS ]]; then
+if [[ -z "${IGNORE_IF_EXISTS[*]}" ]]; then
     declare -a IGNORE_IF_EXISTS=(
         "CHANGELOG.md"
         "README.md"
@@ -257,8 +258,6 @@ if [[ -z $IGNORE_IF_EXISTS ]]; then
         "src/${MODULE_NAME}/__main__.py"
     )
 fi
-
-exit 0;
 
 function copy_template()
 {
@@ -330,7 +329,7 @@ head -n 7 "${PROJECT_DIR}/license.header" \
     | sed -re 's/(^   |^$)/#/g' \
     > /tmp/.py_license.header;
 
-src_files=${PROJECT_DIR}/src/**/*.py
+src_files="${PROJECT_DIR}/src/*/*.py"
 
 for src_file in $src_files; do
     if grep -q -E '^# SPDX-License-Identifier' "$src_file"; then

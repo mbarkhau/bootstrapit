@@ -40,7 +40,7 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 
 ...
 
-PROJECT_DIR="$(dirname $0)"
+PROJECT_DIR=$(dirname "$0");
 source "$PROJECT_DIR/scripts/bootstrapit_update.sh";
 ```
 
