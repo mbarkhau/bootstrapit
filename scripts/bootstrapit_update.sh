@@ -264,13 +264,15 @@ function copy_template()
         dest_subpath=$2;
     fi
 
-    for ignore_item in "${IGNORE_IF_EXISTS[@]}"; do
-        if [[ $dest_subpath == "$ignore_item" ]]; then
-            return 0;
-        fi
-    done
-
     dest_path=${PROJECT_DIR}/$dest_subpath;
+    if [[ -f $dest_subpath ]]; then
+        for ignore_item in "${IGNORE_IF_EXISTS[@]}"; do
+            if [[ $dest_subpath == "$ignore_item" ]]; then
+                return 0;
+            fi
+        done
+    fi
+
     cat ${BOOTSTRAPIT_GIT_PATH}/$1.template > ${dest_path};
 
     format_template ${dest_path};
