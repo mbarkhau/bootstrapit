@@ -200,8 +200,12 @@ clean:
 	@printf "\n setup/update completed  ✨ 🍰 ✨ \n\n"
 
 
-## Force update of dependencies
-##    (this removes makefile markers)
+## Force update of dependencies by removing marker files
+##   Use this when you know an external dependency was
+##   updated, but that is not reflected in your
+##   requirements files.
+##
+##   Usage: make force update
 .PHONY: force
 force:
 	rm -f build/envs.txt
@@ -294,7 +298,7 @@ test:
 		--doctest-modules \
 		--cov-report html \
 		--cov-report term \
-		--cov=$(PKG_NAME) \
+		$(shell ls -1 src/ | awk '{ print "--cov "$$1 }') \
 		test/ src/;
 
 	@rm -rf ".pytest_cache";
