@@ -151,6 +151,15 @@ if [[ -z $COPYRIGHT_STRING ]]; then
     COPYRIGHT_STRING="Copyright (c) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_CONTACT}) - ${LICENSE_NAME}";
 fi
 
+if [[ -z $SETUP_PY_LICENSE ]]; then
+    if [[ $LICENSE_ID =~ "none" ]]; then
+        SETUP_PY_LICENSE=$COPYRIGHT_STRING;
+    else
+        SETUP_PY_LICENSE=$SPDX_LICENSE_ID;
+    fi
+fi
+
+
 if [[ -z $IS_PUBLIC ]]; then
     IS_PUBLIC=$( echo $GIT_REPO_DOMAIN | grep -c -E '(gitlab\.com|github\.com|bitbucket\.org)' || true );
 fi
@@ -167,6 +176,10 @@ if [[ -z $PAGES_DOMAIN ]]; then
     fi
 fi
 
+if [[ -z $PAGES_URL ]]; then
+    PAGES_URL="https://${GIT_REPO_NAMESPACE}.${PAGES_DOMAIN}/${PACKAGE_NAME}/"
+fi
+
 if [[ -z $DOCKER_REGISTRY_DOMAIN ]]; then
     if [[ $GIT_REPO_DOMAIN == "gitlab.com" ]]; then
         DOCKER_REGISTRY_DOMAIN=registry.gitlab.com;
@@ -175,8 +188,12 @@ if [[ -z $DOCKER_REGISTRY_DOMAIN ]]; then
     fi
 fi
 
-if [[ -z $PAGES_URL ]]; then
-    PAGES_URL="https://${GIT_REPO_NAMESPACE}.${PAGES_DOMAIN}/${PACKAGE_NAME}/"
+if [[ -z $DOCKER_BASE_IMAGE ]]; then
+    DOCKER_BASE_IMAGE=frolvlad/alpine-glibc
+fi
+
+if [[ -z ${MODULE_NAME} ]]; then
+    MODULE_NAME=$( echo "${PACKAGE_NAME}" | tr '[:upper:]' '[:lower:]' | sed -E -e 's;-;_;g'; );
 fi
 
 if [[ -z $GIT_REPO_URL ]]; then
@@ -184,14 +201,6 @@ if [[ -z $GIT_REPO_URL ]]; then
 elif [[ ! ${GIT_REPO_URL} =~ ^https?://[^/]+/[^/]+/[^/]+(/|.git)?$ ]]; then
     echo "ERROR: Invalid argument for '${GIT_REPO_URL}'";
     exit 1;
-fi
-
-if [[ -z $DOCKER_BASE_IMAGE ]]; then
-    DOCKER_BASE_IMAGE=frolvlad/alpine-glibc
-fi
-
-if [[ -z ${MODULE_NAME} ]]; then
-    MODULE_NAME=$( echo "${PACKAGE_NAME}" | tr '[:upper:]' '[:lower:]' | sed -E -e 's;-;_;g'; );
 fi
 
 GIT_REPO_PATH=$( echo "${GIT_REPO_URL}" | sed -E -e 's;https?://[^/]+/;;g' | sed -E 's;(/|.git)$;;g' )
@@ -225,6 +234,7 @@ function format_template()
         | sed "s;\${DESCRIPTION};${DESCRIPTION};g" \
         | sed "s;\${KEYWORDS};${KEYWORDS};g" \
         | sed "s;\${SPDX_LICENSE_ID};${SPDX_LICENSE_ID};g" \
+        | sed "s;\${SETUP_PY_LICENSE};${SETUP_PY_LICENSE};g" \
         | sed "s;\${LICENSE_CLASSIFIER};${LICENSE_CLASSIFIER};g" \
         | sed "s;\${COPYRIGHT_STRING};${COPYRIGHT_STRING};g" \
         | sed "s;\${YEAR};${YEAR};g" \

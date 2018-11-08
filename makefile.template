@@ -129,10 +129,6 @@ build/deps.txt: build/envs.txt requirements/*.txt
 	@mv build/deps.txt.tmp build/deps.txt
 
 
-# Add the following 'help' target to your Makefile
-# And add help text after each target name starting with '\#\#'
-# A category can be added with @category
-
 ## This help message
 .PHONY: help
 help:
@@ -370,22 +366,22 @@ endif
 
 
 ## Generate Documentation
-.PHONY: doc
-doc:
-	echo "Not Implemented"
+# .PHONY: doc
+# doc:
+# 	echo "Not Implemented"
 
 
 ## Bump Version number in all files
-.PHONY: bump_version
-bump_version:
-	echo "Not Implemented"
+# .PHONY: bump_version
+# bump_version:
+# 	echo "Not Implemented"
 
 
 ## Freeze dependencies of the current development env
 ##   These dependencies are used for the docker image
-.PHONY: freeze
-freeze:
-	echo "Not Implemented"
+# .PHONY: freeze
+# freeze:
+# 	echo "Not Implemented"
 
 
 ## Create python sdist and bdist_wheel distributions
