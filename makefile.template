@@ -55,6 +55,8 @@ CONDA_ENV_PATHS := \
 DEV_ENV := $(ENV_PREFIX)/$(DEV_ENV_NAME)
 DEV_ENV_PY := $(DEV_ENV)/bin/python
 
+RSA_KEY_PATH := ${HOME}/.ssh/${PKG_NAME}_gitlab_runner_id_rsa
+
 
 build/envs.txt: requirements/conda.txt
 	@mkdir -p build/;
@@ -409,9 +411,9 @@ build_dist:
 ##   4. You're using WSL but didn't do export DOCKER_HOST=localhost:2375
 .PHONY: build_docker
 build_docker:
-	@if [[ -f $$HOME/.ssh/${PKG_NAME}_gitlab_runner_id_rsa ]]; then \
+	@if [[ -f "${RSA_KEY_PATH}" ]]; then \
 		docker build \
-			--build-arg SSH_PRIVATE_RSA_KEY="$$(cat ${HOME}/.ssh/${PKG_NAME}_gitlab_runner_id_rsa)" \
+			--build-arg SSH_PRIVATE_RSA_KEY="$$(cat '${RSA_KEY_PATH}')" \
 			--file docker_base.Dockerfile \
 			--tag $(DOCKER_REGISTRY_URL)/base:latest \
 			.; \
