@@ -243,13 +243,34 @@ function format_template()
     mv $1.tmp $1;
 }
 
+if [[ -z $IGNORE_IF_EXISTS ]]; then
+    declare -a IGNORE_IF_EXISTS=(
+        "CHANGELOG.md"
+        "README.md"
+        "setup.py"
+        "requirements/pypi.txt"
+        "requirements/vendor.txt"
+        "src/${MODULE_NAME}/__init__.py"
+        "src/${MODULE_NAME}/__main__.py"
+    )
+fi
+
+
 function copy_template()
 {
     if [[ -z ${2} ]]; then
-        dest_path=${PROJECT_DIR}/$1;
+        dest_subpath=$1;
     else
-        dest_path=${PROJECT_DIR}/$2;
-    fi;
+        dest_subpath=$2;
+    fi
+
+    for ignore_item in "${IGNORE_IF_EXISTS[@]}"; do
+        if [[ $dest_subpath == "$ignore_item" ]]; then
+            return 0;
+        fi
+    done
+
+    dest_path=${PROJECT_DIR}/$dest_subpath;
     cat ${BOOTSTRAPIT_GIT_PATH}/$1.template > ${dest_path};
 
     format_template ${dest_path};

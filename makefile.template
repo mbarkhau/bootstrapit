@@ -381,8 +381,11 @@ endif
 # 	echo "Not Implemented"
 
 
-## Freeze dependencies of the current development env
-##   These dependencies are used for the docker image
+## Freeze dependencies of the current development env.
+##   The requirements files this produces should be used
+##   in order to have reproducable builds, otherwise you
+##   should minimize the number of pinned versions in
+##   your requirements.
 # .PHONY: freeze
 # freeze:
 # 	echo "Not Implemented"
