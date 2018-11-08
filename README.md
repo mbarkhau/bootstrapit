@@ -40,8 +40,8 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 
 ...
 
-PROJECT_DIR=$(dirname $0)
-source $PROJECT_DIR/scripts/bootstrapit_update.sh;
+PROJECT_DIR="$(dirname $0)"
+source "$PROJECT_DIR/scripts/bootstrapit_update.sh";
 ```
 
 Running this file will modify files in your project directors, so

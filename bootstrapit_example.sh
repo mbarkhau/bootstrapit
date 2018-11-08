@@ -68,7 +68,7 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 
 ## Download and run the actual update script
 
-PROJECT_DIR=$(dirname $0)
+PROJECT_DIR="$(dirname $0)"
 
 if ! [[ -f $PROJECT_DIR/scripts/bootstrapit_update.sh ]]; then
     mkdir -p "$PROJECT_DIR/scripts/";
@@ -77,4 +77,4 @@ if ! [[ -f $PROJECT_DIR/scripts/bootstrapit_update.sh ]]; then
         > "$PROJECT_DIR/scripts/bootstrapit_update.sh"
 fi
 
-source $PROJECT_DIR/scripts/bootstrapit_update.sh;
+source "$PROJECT_DIR/scripts/bootstrapit_update.sh";

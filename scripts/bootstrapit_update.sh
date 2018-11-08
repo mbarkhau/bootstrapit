@@ -4,14 +4,14 @@ set -Ee -o pipefail;
 shopt -s extglob nocasematch;
 
 if [[ -f ${PROJECT_DIR}/.git/config ]]; then
-    OLD_PWD=${PWD}
-    cd ${PROJECT_DIR};
+    OLD_PWD="${PWD}"
+    cd "${PROJECT_DIR}";
     if [[ $( git diff -s --exit-code || echo $? ) -gt 0 ]]; then
         echo "ABORTING!: Your repo has local changes which are not comitted."
         echo "To avoid overwriting these changes, please commit your changes."
         exit 1;
     fi
-    cd $OLD_PWD;
+    cd "$OLD_PWD";
 fi
 
 BOOTSTRAPIT_GIT_URL="https://gitlab.com/mbarkhau/bootstrapit.git/"
@@ -23,16 +23,16 @@ echo "Updating from $BOOTSTRAPIT_GIT_URL";
 if [[ ! -e $BOOTSTRAPIT_GIT_PATH ]]; then
     git clone ${BOOTSTRAPIT_GIT_URL} ${BOOTSTRAPIT_GIT_PATH};
 else
-    OLD_PWD=${PWD};
+    OLD_PWD="${PWD}";
     cd ${BOOTSTRAPIT_GIT_PATH};
     git pull --quiet;
-    cd $OLD_PWD;
+    cd "$OLD_PWD";
 fi
 
 md5sum=$(which md5sum || which md5)
 
-old_md5=$( cat $PROJECT_DIR/scripts/bootstrapit_update.sh | $md5sum );
-new_md5=$( cat $BOOTSTRAPIT_GIT_PATH/scripts/bootstrapit_update.sh | $md5sum );
+old_md5=$( cat "$PROJECT_DIR/scripts/bootstrapit_update.sh" | $md5sum );
+new_md5=$( cat "$BOOTSTRAPIT_GIT_PATH/scripts/bootstrapit_update.sh" | $md5sum );
 
 if [[ $old_md5 != $new_md5 ]]; then
     # Copy the updated file, run it and exit the current execution.
@@ -91,15 +91,15 @@ LICENSE_XML_FILE="/tmp/bootstrapit_$LICENSE_ID.xml"
 
 
 if ! [[ $LICENSE_ID =~ "none" ]]; then
-    if ! [[ -f $LICENSE_TXT_FILE ]]; then
+    if ! [[ -f "$LICENSE_TXT_FILE" ]]; then
         echo "Downloading license text from $LICENSE_TXT_URL"
-        curl -L --silent $LICENSE_TXT_URL > $LICENSE_TXT_FILE.tmp;
-        mv $LICENSE_TXT_FILE.tmp $LICENSE_TXT_FILE;
+        curl -L --silent "$LICENSE_TXT_URL" > "$LICENSE_TXT_FILE.tmp";
+        mv "$LICENSE_TXT_FILE.tmp" "$LICENSE_TXT_FILE";
     fi
-    if ! [[ -f $LICENSE_XML_FILE ]]; then
+    if ! [[ -f "$LICENSE_XML_FILE" ]]; then
         echo "Downloading license info from $LICENSE_XML_URL"
-        curl -L --silent $LICENSE_XML_URL > $LICENSE_XML_FILE.tmp;
-        mv $LICENSE_XML_FILE.tmp $LICENSE_XML_FILE;
+        curl -L --silent "$LICENSE_XML_URL" > "$LICENSE_XML_FILE.tmp";
+        mv "$LICENSE_XML_FILE.tmp" "$LICENSE_XML_FILE";
     fi
 fi
 
@@ -207,12 +207,12 @@ GIT_REPO_PATH=$( echo "${GIT_REPO_URL}" | sed -E -e 's;https?://[^/]+/;;g' | sed
 GIT_REPO_NAME=$( echo "${GIT_REPO_PATH}" | sed -E -e 's;^[A-Za-z_-]+/;;g' )
 
 if [[ $LICENSE_ID =~ "none" ]]; then
-	echo $COPYRIGHT_STRING > $PROJECT_DIR/LICENSE;
+    echo $COPYRIGHT_STRING > "$PROJECT_DIR/LICENSE";
 else
-	cat $LICENSE_TXT_FILE \
-	    | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
-	    | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
-	    > $PROJECT_DIR/LICENSE;
+    cat "$LICENSE_TXT_FILE" \
+        | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+        | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+        > "$PROJECT_DIR/LICENSE";
 fi
 
 function format_template()
@@ -258,6 +258,7 @@ if [[ -z $IGNORE_IF_EXISTS ]]; then
     )
 fi
 
+exit 0;
 
 function copy_template()
 {
@@ -268,17 +269,17 @@ function copy_template()
     fi
 
     dest_path=${PROJECT_DIR}/$dest_subpath;
-    if [[ -f $dest_subpath ]]; then
+    if [[ -f "$dest_subpath" ]]; then
         for ignore_item in "${IGNORE_IF_EXISTS[@]}"; do
-            if [[ $dest_subpath == "$ignore_item" ]]; then
+            if [[ "$dest_subpath" == "$ignore_item" ]]; then
                 return 0;
             fi
         done
     fi
 
-    cat ${BOOTSTRAPIT_GIT_PATH}/$1.template > ${dest_path};
+    cat "${BOOTSTRAPIT_GIT_PATH}/$1.template" > "$dest_path";
 
-    format_template ${dest_path};
+    format_template "$dest_path";
 }
 
 mkdir -p "${PROJECT_DIR}/test/";
@@ -324,32 +325,32 @@ chmod +x "${PROJECT_DIR}/scripts/update_conda_env_deps.sh";
 chmod +x "${PROJECT_DIR}/scripts/setup_conda_envs.sh";
 chmod +x "${PROJECT_DIR}/scripts/pre-push-hook.sh";
 
-head -n 7 ${PROJECT_DIR}/license.header \
+head -n 7 "${PROJECT_DIR}/license.header" \
     | tail -n +3 \
     | sed -re 's/(^   |^$)/#/g' \
-    > .py_license.header;
+    > /tmp/.py_license.header;
 
 src_files=${PROJECT_DIR}/src/**/*.py
 
 for src_file in $src_files; do
-    if grep -q -E '^# SPDX-License-Identifier' $src_file; then
+    if grep -q -E '^# SPDX-License-Identifier' "$src_file"; then
         continue;
     fi
     offset=0
-    if grep -z -q -E '^#![/a-z ]+?python' $src_file; then
+    if grep -z -q -E '^#![/a-z ]+?python' "$src_file"; then
         let offset+=1;
     fi
-    if grep -q -E '^# .+?coding: [a-zA-Z0-9_\-]+' $src_file; then
+    if grep -q -E '^# .+?coding: [a-zA-Z0-9_\-]+' "$src_file"; then
         let offset+=1;
     fi
-    rm -f ${src_file}.with_header;
+    rm -f "${src_file}.with_header";
     if [[ $offset -gt 0 ]]; then
-        head -n $offset ${src_file} > ${src_file}.with_header;
+        head -n $offset "${src_file}" > "${src_file}.with_header";
     fi
     let offset+=1;
-    cat .py_license.header >> ${src_file}.with_header;
-    tail -n +$offset ${src_file} >> ${src_file}.with_header;
-    mv ${src_file}.with_header $src_file;
+    cat /tmp/.py_license.header >> "${src_file}.with_header";
+    tail -n +$offset "${src_file}" >> "${src_file}.with_header";
+    mv "${src_file}.with_header" "$src_file";
 done
 
-rm .py_license.header
+rm /tmp/.py_license.header
