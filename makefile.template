@@ -408,7 +408,7 @@ build_dist:
 ##      and is copied into a temp container during the build).
 ##   2. Your docker daemon is not running
 ##   3. You're using WSL and docker is not exposed on tcp://localhost:2375
-##   4. You're using WSL but didn't do export DOCKER_HOST=localhost:2375
+##   4. You're using WSL but didn't do export DOCKER_HOST="tcp://localhost:2375"
 .PHONY: build_docker
 build_docker:
 	@if [[ -f "${RSA_KEY_PATH}" ]]; then \
