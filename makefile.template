@@ -35,7 +35,7 @@ MODULE_SRC_PATH = src/$(PKG_NAME)/
 PLATFORM = $(shell uname -s)
 
 # miniconda is shared between projects
-CONDA_ROOT := $(shell if [[ -d /opt/conda ]]; then echo "/opt/conda"; else echo "$$HOME/miniconda3"; fi;)
+CONDA_ROOT := $(shell if [[ -d /opt/conda/bin ]]; then echo "/opt/conda"; else echo "$$HOME/miniconda3"; fi;)
 CONDA_BIN := $(CONDA_ROOT)/bin/conda
 
 ENV_PREFIX := $(CONDA_ROOT)/envs
