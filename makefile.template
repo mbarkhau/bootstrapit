@@ -348,8 +348,7 @@ devtest:
 	@rm -rf "src/__pycache__";
 	@rm -rf "test/__pycache__";
 
-
-ifndef FILTER
+ifdef FILTER
 	ENV=$${ENV-dev} PYTHONPATH=src/:vendor/:$$PYTHONPATH \
 		$(DEV_ENV_PY) -m pytest -v \
 		--doctest-modules \
@@ -357,6 +356,7 @@ ifndef FILTER
 		--verbose \
 		--capture=no \
 		--exitfirst \
+		-k $(FILTER) \
 		test/ src/;
 else
 	ENV=$${ENV-dev} PYTHONPATH=src/:vendor/:$$PYTHONPATH \
@@ -366,7 +366,6 @@ else
 		--verbose \
 		--capture=no \
 		--exitfirst \
-		-k $(FILTER) \
 		test/ src/;
 endif
 
