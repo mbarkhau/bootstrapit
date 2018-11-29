@@ -45,6 +45,29 @@ if [[ "$old_md5" != "$new_md5" ]]; then
     exit 0;
 fi
 
+# Argument parsing from
+# https://stackoverflow.com/a/14203146/62997
+UPDATE_ALL=0
+
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -a|--all)
+    UPDATE_ALL=1
+    shift # past argument
+    ;;
+    *)    # unknown option
+    POSITIONAL+=("$1") # save it in an array for later
+    shift # past argument
+    ;;
+esac
+done
+
+set -- "${POSITIONAL[@]}" # restore positional parameters
+
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
 
@@ -243,6 +266,10 @@ function format_template()
         > "$1.tmp";
     mv "$1.tmp" "$1";
 }
+
+if [[ ${UPDATE_ALL} ]]; then
+    declare -a IGNORE_IF_EXISTS=()
+fi
 
 if [[ -z "${IGNORE_IF_EXISTS[*]}" ]]; then
     declare -a IGNORE_IF_EXISTS=(
