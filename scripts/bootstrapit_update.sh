@@ -267,11 +267,9 @@ function format_template()
     mv "$1.tmp" "$1";
 }
 
-if [[ ${UPDATE_ALL} ]]; then
+if [[ "${UPDATE_ALL}" -eq "1" ]]; then
     declare -a IGNORE_IF_EXISTS=()
-fi
-
-if [[ -z "${IGNORE_IF_EXISTS[*]}" ]]; then
+elif [[ -z "${IGNORE_IF_EXISTS[*]}" ]]; then
     declare -a IGNORE_IF_EXISTS=(
         "CHANGELOG.md"
         "README.md"
