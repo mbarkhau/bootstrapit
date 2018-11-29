@@ -1,24 +1,39 @@
-# ${GIT_REPO_NAME}
+# [${GIT_REPO_NAME}][repo_ref]
 
-Badges for public repositories using pypi/gitlab/codecov:
+Project/Repo:
 
-[![Build Status][build_img]][build_ref]
-[![Code Coverage][codecov_img]][codecov_ref]
 [![MIT License][license_img]][license_ref]
-[![Code Style: sjfmt][style_img]][style_ref]
-[![Type Checked with mypy][mypy_img]][mypy_ref]
+[![Supported Python Versions][pyversions_img]][pyversions_ref]
 [![PyCalVer v${YEAR}${MONTH}.0001-alpha][version_img]][version_ref]
 [![PyPI Version][pypi_img]][pypi_ref]
 [![PyPI Downloads][downloads_img]][downloads_ref]
-[![PyPI Wheel][wheel_img]][wheel_ref]
-[![Supported Python Versions][pyversions_img]][pyversions_ref]
+
+Code Quality/CI:
+
+[![Type Checked with mypy][mypy_img]][mypy_ref]
+[![Code Style: sjfmt][style_img]][style_ref]
+[![Code Coverage][codecov_img]][codecov_ref]
+[![Build Status][build_img]][build_ref]
 
 
-|               Name                 |    role    |      since       | until |
-|------------------------------------|------------|------------------|-------|
-| ${AUTHOR_NAME} (${AUTHOR_CONTACT}) | maintainer | ${YEAR}-${MONTH} | -     |
+|               Name                 |    role           |      since       | until |
+|------------------------------------|-------------------|------------------|-------|
+| ${AUTHOR_NAME} (${AUTHOR_CONTACT}) | author/maintainer | ${YEAR}-${MONTH} | -     |
 
 
+<!--
+  To update the TOC:
+  $ pip install md-toc
+  $ md_toc -i gitlab README.md
+-->
+
+
+[](TOC)
+
+[](TOC)
+
+
+[repo_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}
 
 [build_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/pipeline.svg
 [build_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/pipelines
@@ -35,17 +50,14 @@ Badges for public repositories using pypi/gitlab/codecov:
 [style_img]: https://img.shields.io/badge/code%20style-%20sjfmt-f71.svg
 [style_ref]: https://gitlab.com/mbarkhau/straitjacket/
 
-[pypi_img]: https://img.shields.io/pypi/v/${GIT_REPO_NAME}.svg
-[pypi_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/CHANGELOG.rst
+[pypi_img]: https://img.shields.io/badge/PyPI-wheels-green.svg
+[pypi_ref]: https://pypi.org/project/${GIT_REPO_NAME}/#files
 
 [downloads_img]: https://pepy.tech/badge/${GIT_REPO_NAME}
 [downloads_ref]: https://pepy.tech/project/${GIT_REPO_NAME}
 
 [version_img]: https://img.shields.io/badge/PyCalVer-v${YEAR}${MONTH}.0001--alpha-blue.svg
 [version_ref]: https://pypi.org/project/pycalver/
-
-[wheel_img]: https://img.shields.io/pypi/wheel/${GIT_REPO_NAME}.svg
-[wheel_ref]: https://pypi.org/project/${GIT_REPO_NAME}/#files
 
 [pyversions_img]: https://img.shields.io/pypi/pyversions/${GIT_REPO_NAME}.svg
 [pyversions_ref]: https://pypi.python.org/pypi/${GIT_REPO_NAME}
