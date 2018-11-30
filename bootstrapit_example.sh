@@ -53,6 +53,13 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 
 # DOCKER_REGISTRY_DOMAIN=registry.gitlab.com
 # DOCKER_REGISTRY_DOMAIN=docker.yourdomain.com
+#
+# DOCKER_ROOT_IMAGE=debian:stable-slim
+# # The alpine-glibc image is a bit smaller than debian,
+# # but may be politically less viable in your organization.
+# DOCKER_ROOT_IMAGE=frolvlad/alpine-glibc
+# DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_DOMAIN}/${GIT_REPO_NAMESPACE}/${PACKAGE_NAME}
+# DOCKER_BASE_IMAGE=${DOCKER_REGISTRY_URL}/base:latest
 
 # LICENSE_NAME="Proprietary License"
 # classifiers: https://pypi.org/pypi?%3Aaction=list_classifiers
@@ -63,8 +70,6 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 
 
 # PAGES_URL="https://${NAMESPACE}.${PAGES_DOMAIN}/${PACKAGE_NAME}/"
-
-# DOCKER_BASE_IMAGE=frolvlad/alpine-glibc
 
 ## Download and run the actual update script
 

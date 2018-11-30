@@ -1,6 +1,5 @@
 
 PACKAGE_NAME := ${GIT_REPO_NAME}
-DOCKER_REGISTRY_URL := ${DOCKER_REGISTRY_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}
 
 # This is the python version that is used for:
 # - `make fmt`
