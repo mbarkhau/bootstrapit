@@ -20,7 +20,7 @@ ENV SHELL /bin/bash
 RUN if [ $(which apk) ]; then \
         apk add --no-cache bash make sed grep gawk curl git bzip2 unzip; \
     elif [ $(which apt-get) ]; then \
-        apt-get update && apt-get install --yes bash make sed grep gawk curl git bzip2 unzip \
+        apt-get update && apt-get install --yes bash make sed grep gawk curl git bzip2 unzip; \
     else \
         echo "Invalid Distro: $(uname -a)"; \
         exit 1; \
@@ -31,9 +31,9 @@ CMD [ "/bin/bash" ]
 FROM base_image AS builder
 
 RUN if [ $(which apk) ]; then \
-        apk add --no-cache ca-certificates openssh-client openssh-keygen \
+        apk add --no-cache ca-certificates openssh-client openssh-keygen; \
     elif [ $(which apt-get) ]; then \
-        apt-get --yes install ca-certificates openssh-client \
+        apt-get --yes install ca-certificates openssh-client; \
     else \
         echo "Invalid Distro: $(uname -a)"; \
         exit 1; \
