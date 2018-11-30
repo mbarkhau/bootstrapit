@@ -1,15 +1,6 @@
-FROM $(DOCKER_BASE_IMAGE)
+FROM ${DOCKER_BASE_IMAGE}
 
-ADD scripts/ scripts/
 ADD src/ src/
-ADD tools/ tools/
-ADD data/ data/
-ADD config/ config/
-ADD data_extraction/ data_extraction/
-ADD document_type_recognition/ document_type_recognition/
-ADD database/ database/
-ADD app.py app.py
-
 ADD stubs/ stubs/
 ADD test/ test/
 ADD setup.cfg setup.cfg
@@ -19,5 +10,4 @@ ADD makefile.extra.make makefile.extra.make
 
 ENV PYTHONPATH="src/:vendor/"
 
-CMD export PATH=/opt/conda/envs/des_v2_py36/bin:$PATH; \
-    python app.py
+CMD make serve
