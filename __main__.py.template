@@ -2,6 +2,15 @@
 import click
 import ${MODULE_NAME}
 
+try:
+    import backtrace
+
+    # To enable pretty tracebacks:
+    #   echo "export ENABLE_BACKTRACE=1;" >> ~/.bashrc
+    backtrace.hook(align=True, strip_path=True, enable_on_envvar_only=True)
+except ImportError:
+    pass
+
 
 @click.group()
 def cli() -> None:
