@@ -25,7 +25,7 @@ install_requires = [
 ]
 
 
-long_description = "\n\n".join((read("README.md"), read("CONTRIBUTING.md"), read("CHANGELOG.md")))
+long_description = "\n\n".join((read("README.md"), read("CHANGELOG.md")))
 
 
 setuptools.setup(
