@@ -68,13 +68,18 @@ done
 
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
+if [[ -z $AUTHOR_EMAIL && $AUTHOR_CONTACT ]]; do
+    $AUTHOR_EMAIL=${AUTHOR_CONTACT}
+fi
+
 YEAR=$(date +%Y)
 MONTH=$(date +%m)
 
 declare -a required_config_param_names=(
     "AUTHOR_NAME"
-    "AUTHOR_CONTACT"
+    "AUTHOR_EMAIL"
     "PACKAGE_NAME"
+    "IS_PUBLIC"
     "GIT_REPO_NAMESPACE"
     "GIT_REPO_DOMAIN"
     "DESCRIPTION"
@@ -95,6 +100,10 @@ fi
 
 if [[ -z $DEFAULT_PYTHON_VERSION ]]; then
     DEFAULT_PYTHON_VERSION="python=3.6";
+fi
+
+if [[ -z $SUPPORTED_PYTHON_VERSIONS ]]; then
+    SUPPORTED_PYTHON_VERSIONS=${DEFAULT_PYTHON_VERSION};
 fi
 
 if [[ -z $SPDX_LICENSE_ID ]]; then
@@ -172,7 +181,7 @@ if [[ -z $LICENSE_CLASSIFIER ]]; then
 fi
 
 if [[ -z "$COPYRIGHT_STRING" ]]; then
-    COPYRIGHT_STRING="Copyright (c) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_CONTACT}) - ${LICENSE_NAME}";
+    COPYRIGHT_STRING="Copyright (c) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_EMAIL}) - ${LICENSE_NAME}";
 fi
 
 if [[ -z "$SETUP_PY_LICENSE" ]]; then
@@ -242,8 +251,8 @@ if [[ "$LICENSE_ID" =~ "none" ]]; then
     echo "$COPYRIGHT_STRING" > "$PROJECT_DIR/LICENSE";
 else
     cat "$LICENSE_TXT_FILE" \
-        | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
-        | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_CONTACT)/g" \
+        | sed "s/Copyright (c) <year> <owner>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_EMAIL)/g" \
+        | sed "s/Copyright (c) <year> <copyright holders>[[:space:]]*/Copyright (c) $YEAR $AUTHOR_NAME ($AUTHOR_EMAIL)/g" \
         > "$PROJECT_DIR/LICENSE";
 fi
 
@@ -256,6 +265,7 @@ function format_template()
         | sed "s;\${GIT_REPO_NAME};${GIT_REPO_NAME};g" \
         | sed "s;\${GIT_REPO_DOMAIN};${GIT_REPO_DOMAIN};g" \
         | sed "s;\${DEFAULT_PYTHON_VERSION};${DEFAULT_PYTHON_VERSION};g" \
+        | sed "s;\${SUPPORTED_PYTHON_VERSIONS};${SUPPORTED_PYTHON_VERSIONS};g" \
         | sed "s;\${DOCKER_REGISTRY_DOMAIN};${DOCKER_REGISTRY_DOMAIN};g" \
         | sed "s;\${DOCKER_REGISTRY_URL};${DOCKER_REGISTRY_URL};g" \
         | sed "s;\${DOCKER_ROOT_IMAGE};${DOCKER_ROOT_IMAGE};g" \
@@ -263,6 +273,7 @@ function format_template()
         | sed "s;\${PAGES_DOMAIN};${PAGES_DOMAIN};g" \
         | sed "s;\${PAGES_URL};${PAGES_URL};g" \
         | sed "s;\${AUTHOR_CONTACT};${AUTHOR_CONTACT};g" \
+        | sed "s;\${AUTHOR_EMAIL};${AUTHOR_EMAIL};g" \
         | sed "s;\${AUTHOR_NAME};${AUTHOR_NAME};g" \
         | sed "s;\${MODULE_NAME};${MODULE_NAME};g" \
         | sed "s;\${DESCRIPTION};${DESCRIPTION};g" \
@@ -273,6 +284,7 @@ function format_template()
         | sed "s;\${COPYRIGHT_STRING};${COPYRIGHT_STRING};g" \
         | sed "s;\${YEAR};${YEAR};g" \
         | sed "s;\${MONTH};${MONTH};g" \
+        | sed "s;\${IS_PUBLIC};${IS_PUBLIC};g" \
         > "$1.tmp";
     mv "$1.tmp" "$1";
 }

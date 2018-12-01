@@ -7,7 +7,7 @@
 #  - README.md contributor info
 # This can also be a company or organization name and email
 AUTHOR_NAME="Vandelay Industries"
-AUTHOR_CONTACT="info@vandelay.industries"
+AUTHOR_EMAIL="info@vandelay.industries"
 
 KEYWORDS="keywords used on pypi"
 DESCRIPTION="Example description."
@@ -34,7 +34,19 @@ PACKAGE_NAME="mypackagename"
 GIT_REPO_NAMESPACE="vandelay"
 GIT_REPO_DOMAIN="gitlab.com"
 
+# These must be valid (space separated) conda package names.
+# A separate conda environment will be created for each of these.
+#
+# Some valid options (as of late 2018) are:
+# - python=2.7
+# - python=3.5
+# - python=3.6
+# - python=3.7
+# - pypy2.7
+# - pypy3.5
+
 DEFAULT_PYTHON_VERSION="python=3.6"
+# SUPPORTED_PYTHON_VERSIONS="python=3.6 python=3.7"
 
 # GIT_REPO_URL=https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${PACKAGE_NAME}
 
@@ -43,7 +55,7 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 # LICENSE_NAME="MIT License"
 # LICENSE_CLASSIFIER="License :: OSI Approved :: MIT License"
 # LICENSE_CLASSIFIER="License :: Other/Proprietary License"
-# COPYRIGHT_STRING="Copyright (c) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_CONTACT}) - ${LICENSE_NAME}"
+# COPYRIGHT_STRING="Copyright (c) ${YEAR} ${AUTHOR_NAME} (${AUTHOR_EMAIL}) - ${LICENSE_NAME}"
 
 # Pages are used by the ci runner to host coverage reports
 # PAGES_DOMAIN=gitlab.io
@@ -64,9 +76,8 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 # LICENSE_NAME="Proprietary License"
 # classifiers: https://pypi.org/pypi?%3Aaction=list_classifiers
 
-# 0: Disables badges of public services in README.md
-# IS_PUBLIC=1
-# IS_PUBLIC=$( echo $REPO_DOMAIN | grep -c -E '(gitlab\.com|github\.com|bitbucket\.org)' )
+# 1: Disables a failsafe for publishing to pypi
+IS_PUBLIC=0
 
 
 # PAGES_URL="https://${NAMESPACE}.${PAGES_DOMAIN}/${PACKAGE_NAME}/"

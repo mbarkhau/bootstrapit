@@ -32,7 +32,7 @@ setuptools.setup(
     name="${MODULE_NAME}",
     license="${SETUP_PY_LICENSE}",
     author="${AUTHOR_NAME}",
-    author_email="${AUTHOR_CONTACT}",
+    author_email="${AUTHOR_EMAIL}",
     url="${GIT_REPO_URL}",
     version="${YEAR}${MONTH}.1a0",
     keywords="${KEYWORDS}",

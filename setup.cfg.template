@@ -2,7 +2,8 @@
 license_file = LICENSE
 
 [bdist_wheel]
-universal = 1
+# by default, not python 2 compatible
+universal = 0
 
 [mypy]
 check_untyped_defs = True

@@ -25,7 +25,7 @@ Update `bootstrapit.sh` with your project specific info.
 
 ```bash
 AUTHOR_NAME="Vandelay Industries"
-AUTHOR_CONTACT="info@vandelay.industries"
+AUTHOR_EMAIL="info@vandelay.industries"
 
 KEYWORDS="keywords used on pypi"
 DESCRIPTION="Example description."
@@ -37,6 +37,7 @@ GIT_REPO_NAMESPACE="vandelay"
 GIT_REPO_DOMAIN="gitlab.com"
 
 DEFAULT_PYTHON_VERSION="python=3.6"
+SUPPORTED_PYTHON_VERSIONS="python=3.6 python=3.7"
 
 ...
 

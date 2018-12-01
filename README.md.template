@@ -16,9 +16,9 @@ Code Quality/CI:
 [![Build Status][build_img]][build_ref]
 
 
-|               Name                 |    role           |      since       | until |
-|------------------------------------|-------------------|------------------|-------|
-| ${AUTHOR_NAME} (${AUTHOR_CONTACT}) | author/maintainer | ${YEAR}-${MONTH} | -     |
+|               Name               |    role           |      since       | until |
+|----------------------------------|-------------------|------------------|-------|
+| ${AUTHOR_NAME} (${AUTHOR_EMAIL}) | author/maintainer | ${YEAR}-${MONTH} | -     |
 
 
 <!--

@@ -14,10 +14,6 @@ SHELL := /bin/bash
 
 PROJECT_DIR := $(notdir $(abspath .))
 
-ifndef MODULE_SRC_PATH
-	MODULE_SRC_PATH := $(notdir $(abspath .))
-endif
-
 ifndef DEVELOPMENT_PYTHON_VERSION
 	DEVELOPMENT_PYTHON_VERSION := python=3.6
 endif
@@ -27,7 +23,6 @@ ifndef SUPPORTED_PYTHON_VERSIONS
 endif
 
 PKG_NAME := $(PACKAGE_NAME)
-MODULE_SRC_PATH = src/$(PKG_NAME)/
 
 # TODO (mb 2018-09-23): Support for bash on windows
 #    perhaps we need to install conda using this
@@ -48,6 +43,15 @@ CONDA_ENV_NAMES := \
 
 CONDA_ENV_PATHS := \
 	$(subst py,${ENV_PREFIX}/$(PKG_NAME)_py,$(subst .,,$(subst =,,$(subst thon,,$(SUPPORTED_PYTHON_VERSIONS)))))
+
+literal_space := $() $()
+
+BDIST_WHEEL_PYTHON_TAG := \
+	$(subst python,py,$(subst $(literal_space),.,$(subst .,,$(subst =,,$(SUPPORTED_PYTHON_VERSIONS)))))
+
+SDIST_FILE_CMD = ls -1t dist/*.tar.gz | head -n 1
+
+BDIST_WHEEL_FILE_CMD = ls -1t dist/*.whl | head -n 1
 
 
 # default version for development
@@ -244,21 +248,7 @@ git_hooks:
 	ln -s "${PWD}/scripts/pre-push-hook.sh" "${PWD}/.git/hooks/pre-push"
 
 
-
-# TODO make target to publish on pypi
-# .PHONY: publish
-# publish:
-#    echo "Not Implemented"
-
-
-## -- Development --
-
-
-## Run code formatter on src/ and test/
-.PHONY: fmt
-fmt:
-	@$(DEV_ENV)/bin/sjfmt --py36 --skip-string-normalization --line-length=100 \
-		 src/ test/
+## -- Integration --
 
 
 ## Run flake8 linter
@@ -302,13 +292,24 @@ test:
 	@rm -rf "src/__pycache__";
 	@rm -rf "test/__pycache__";
 
+	# First we test the local source tree using the dev environment
 	ENV=$${ENV-dev} PYTHONPATH=src/:vendor/:$$PYTHONPATH \
 		$(DEV_ENV_PY) -m pytest -v \
 		--doctest-modules \
+		--verbose \
 		--cov-report html \
 		--cov-report term \
 		$(shell cd src/ && ls -1 */__init__.py | awk '{ print "--cov "substr($$1,0,index($$1,"/")-1) }') \
 		test/ src/;
+
+	# Next we install the package and run the test suite against it.
+
+	IFS=' ' read -r -a env_paths <<< "$(CONDA_ENV_PATHS)"; \
+	for i in $${!env_paths[@]}; do \
+		env_py=$${env_paths[i]}/bin/python; \
+		$${env_py} -m pip install --upgrade .; \
+		ENV=$${ENV-dev} $${env_py} -m pytest test/; \
+	done;
 
 	@rm -rf ".pytest_cache";
 	@rm -rf "src/__pycache__";
@@ -316,6 +317,13 @@ test:
 
 
 ## -- Helpers --
+
+
+## Run code formatter on src/ and test/
+.PHONY: fmt
+fmt:
+	@$(DEV_ENV)/bin/sjfmt --py36 --skip-string-normalization --line-length=100 \
+		 src/ test/
 
 
 ## Shortcut for make fmt lint pylint test
@@ -378,34 +386,55 @@ endif
 ## -- Build/Deploy --
 
 
-## Generate Documentation
+# Generate Documentation
 # .PHONY: doc
 # doc:
 # 	echo "Not Implemented"
 
 
-## Bump Version number in all files
-# .PHONY: bump_version
-# bump_version:
-# 	echo "Not Implemented"
 
 
-## Freeze dependencies of the current development env.
-##   The requirements files this produces should be used
-##   in order to have reproducable builds, otherwise you
-##   should minimize the number of pinned versions in
-##   your requirements.
+# Freeze dependencies of the current development env.
+#   The requirements files this produces should be used
+#   in order to have reproducable builds, otherwise you
+#   should minimize the number of pinned versions in
+#   your requirements.
 # .PHONY: freeze
 # freeze:
-# 	echo "Not Implemented"
+#   echo "Not Implemented"
 
 
-## Create python sdist and bdist_wheel distributions
-.PHONY: build_dist
-build_dist:
-	$(DEV_ENV_PY) setup.py sdist bdist_wheel
-	twine check dist/*
-	echo "To a PUBLIC release on pypi run:\n\t\$(DEV_ENV_PY) setup.py upload"
+## Bump Version number in all files
+.PHONY: bump_version
+bump_version:
+	echo "Not Implemented"
+	# $(DEV_ENV)/bin/pycalver bump;
+
+
+## Create python sdist and bdist_wheel files
+.PHONY: build_dists
+build_dists:
+	$(DEV_ENV_PY) setup.py sdist;
+	$(DEV_ENV_PY) setup.py bdist_wheel --python-tag=$(BDIST_WHEEL_PYTHON_TAG);
+
+
+## Upload sdist and bdist files to pypi
+.PHONY: upload_dists
+upload_dists:
+	@if [[ "1" != "1" ]]; then \
+		echo "FAILSAFE! Not publishing a private package."; \
+		echo "  To avoid this set IS_PUBLIC=1 in bootstrap.sh and run it."; \
+		exit 1; \
+	fi
+
+	$(DEV_ENV)/bin/twine check $$($(SDIST_FILE_CMD));
+	$(DEV_ENV)/bin/twine check $$($(BDIST_WHEEL_FILE_CMD));
+	$(DEV_ENV)/bin/twine upload $$($(SDIST_FILE_CMD)) $$($(BDIST_WHEEL_FILE_CMD));
+
+
+## Publish on pypi
+.PHONY: publish
+publish: bump_version build_dists upload_dists
 
 
 ## Build docker images. Must be run when dependencies are added
