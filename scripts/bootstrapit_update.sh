@@ -3,17 +3,6 @@
 set -Ee -o pipefail;
 shopt -s extglob nocasematch;
 
-if [[ -f "$PROJECT_DIR/.git/config" ]]; then
-    OLD_PWD="$PWD"
-    cd "$PROJECT_DIR";
-    if [[ $( git diff -s --exit-code || echo "$?" ) -gt 0 ]]; then
-        echo "ABORTING!: Your repo has local changes which are not comitted."
-        echo "To avoid overwriting these changes, please commit your changes."
-        exit 1;
-    fi
-    cd "$OLD_PWD";
-fi
-
 BOOTSTRAPIT_GIT_URL="https://gitlab.com/mbarkhau/bootstrapit.git/"
 
 BOOTSTRAPIT_GIT_PATH=/tmp/bootstrapit;
@@ -29,21 +18,37 @@ else
     cd "$OLD_PWD";
 fi
 
-md5sum=$(which md5sum || which md5)
+BOOTSTRAPIT_DEBUG=0
 
-old_md5=$( cat "$PROJECT_DIR/scripts/bootstrapit_update.sh" | $md5sum );
-new_md5=$( cat "$BOOTSTRAPIT_GIT_PATH/scripts/bootstrapit_update.sh" | $md5sum );
+if [[ $BOOTSTRAPIT_DEBUG == 0 ]]; then
+    if [[ -f "$PROJECT_DIR/.git/config" ]]; then
+        OLD_PWD="$PWD"
+        cd "$PROJECT_DIR";
+        if [[ $( git diff -s --exit-code || echo "$?" ) -gt 0 ]]; then
+            echo "ABORTING!: Your repo has local changes which are not comitted."
+            echo "To avoid overwriting these changes, please commit your changes."
+            exit 1;
+        fi
+        cd "$OLD_PWD";
+    fi
 
-if [[ "$old_md5" != "$new_md5" ]]; then
-    # Copy the updated file, run it and exit the current execution.
-    cp "${BOOTSTRAPIT_GIT_PATH}/scripts/bootstrapit_update.sh" \
-        "${PROJECT_DIR}/scripts/";
-    git add "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
-    git commit --no-verify -m "auto update of scripts/bootstrapit_update.sh"
-    # shellcheck source=scripts/bootstrapit_update.sh
-    source "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
-    exit 0;
+    md5sum=$(which md5sum || which md5)
+
+    old_md5=$( cat "$PROJECT_DIR/scripts/bootstrapit_update.sh" | $md5sum );
+    new_md5=$( cat "$BOOTSTRAPIT_GIT_PATH/scripts/bootstrapit_update.sh" | $md5sum );
+
+    if [[ "$old_md5" != "$new_md5" ]]; then
+        # Copy the updated file, run it and exit the current execution.
+        cp "${BOOTSTRAPIT_GIT_PATH}/scripts/bootstrapit_update.sh" \
+            "${PROJECT_DIR}/scripts/";
+        git add "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
+        git commit --no-verify -m "auto update of scripts/bootstrapit_update.sh"
+        # shellcheck source=scripts/bootstrapit_update.sh
+        source "${PROJECT_DIR}/scripts/bootstrapit_update.sh";
+        exit 0;
+    fi
 fi
+
 
 # Argument parsing from
 # https://stackoverflow.com/a/14203146/62997
@@ -68,8 +73,8 @@ done
 
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
-if [[ -z $AUTHOR_EMAIL && $AUTHOR_CONTACT ]]; do
-    $AUTHOR_EMAIL=${AUTHOR_CONTACT}
+if [[ -z $AUTHOR_EMAIL && ! -z $AUTHOR_CONTACT ]]; then
+    AUTHOR_EMAIL="${AUTHOR_CONTACT}"
 fi
 
 YEAR=$(date +%Y)
