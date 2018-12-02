@@ -135,9 +135,59 @@ build/deps.txt: build/envs.txt requirements/*.txt
 	@mv build/deps.txt.tmp build/deps.txt
 
 
-## This help message
+## Short help message for each task.
 .PHONY: help
 help:
+	@awk '{ \
+			if ($$0 ~ /^.PHONY: [a-zA-Z\-\_0-9]+$$/) { \
+				helpCommand = substr($$0, index($$0, ":") + 2); \
+				if (helpMessage) { \
+					printf "\033[36m%-20s\033[0m %s\n", \
+						helpCommand, helpMessage; \
+					helpMessage = ""; \
+				} \
+			} else if ($$0 ~ /^[a-zA-Z\-\_0-9.]+:/) { \
+				helpCommand = substr($$0, 0, index($$0, ":")); \
+				if (helpMessage) { \
+					printf "\033[36m%-20s\033[0m %s\n", \
+						helpCommand, helpMessage; \
+					helpMessage = ""; \
+				} \
+			} else if ($$0 ~ /^##/) { \
+				if (! (helpMessage)) { \
+					helpMessage = substr($$0, 3); \
+				} \
+			} else { \
+				if (helpMessage) { \
+					print "                     "helpMessage \
+				} \
+				helpMessage = ""; \
+			} \
+		}' \
+		$(MAKEFILE_LIST)
+
+	@if [[ ! -f $(DEV_ENV_PY) ]]; then \
+	echo "Missing python interpreter at $(DEV_ENV_PY) !"; \
+	echo "You problably want to install first:"; \
+	echo ""; \
+	echo "    make install"; \
+	echo ""; \
+	exit 0; \
+	fi
+
+	@if [[ ! -f $(CONDA_BIN) ]]; then \
+	echo "No conda installation found!"; \
+	echo "You problably want to install first:"; \
+	echo ""; \
+	echo "    make install"; \
+	echo ""; \
+	exit 0; \
+	fi
+
+
+## Full help message for each task.
+.PHONY: fullhelp
+fullhelp:
 	@printf "Available make targets for \033[97m$(PKG_NAME)\033[0m:\n";
 
 	@awk '{ \
@@ -169,24 +219,6 @@ help:
 			} \
 		}' \
 		$(MAKEFILE_LIST)
-
-	@if [[ ! -f $(DEV_ENV_PY) ]]; then \
-	echo "Missing python interpreter at $(DEV_ENV_PY) !"; \
-	echo "You problably want to install first:"; \
-	echo ""; \
-	echo "    make install"; \
-	echo ""; \
-	exit 0; \
-	fi
-
-	@if [[ ! -f $(CONDA_BIN) ]]; then \
-	echo "No conda installation found!"; \
-	echo "You problably want to install first:"; \
-	echo ""; \
-	echo "    make install"; \
-	echo ""; \
-	exit 0; \
-	fi
 
 
 ## -- Project Setup --
@@ -392,16 +424,15 @@ endif
 # 	echo "Not Implemented"
 
 
-
-
-# Freeze dependencies of the current development env.
-#   The requirements files this produces should be used
-#   in order to have reproducable builds, otherwise you
-#   should minimize the number of pinned versions in
-#   your requirements.
-# .PHONY: freeze
-# freeze:
-#   echo "Not Implemented"
+## Freeze dependencies of the current development env.
+##   The requirements files this produces should be used
+##   in order to have reproducable builds, otherwise you
+##   should minimize the number of pinned versions in
+##   your requirements.
+.PHONY: freeze
+freeze:
+	$(DEV_ENV_PY) -m pip freeze \
+		> requirements/$(shell date -u +"%Y%m%dt%H%M%S")_freeze.txt
 
 
 ## Bump Version number in all files
@@ -462,5 +493,7 @@ build_docker:
 
 	docker push $(DOCKER_BASE_IMAGE)
 
+
+## -- Extra/Custom/Project Specific Tasks --
 
 -include makefile.extra.make
