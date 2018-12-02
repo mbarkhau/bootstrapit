@@ -405,4 +405,6 @@ for src_file in $src_files; do
     mv "${src_file}.with_header" "$src_file";
 done
 
-rm /tmp/.py_license.header
+rm /tmp/.py_license.header;
+
+git status;
