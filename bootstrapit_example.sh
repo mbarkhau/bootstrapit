@@ -85,7 +85,7 @@ IS_PUBLIC=0
 ## Download and run the actual update script
 
 if [[ $KEYWORDS == "keywords used on pypi" ]]; then
-    echo "Default bootstrapit config detected.";
+    echo "FAILSAFE! Default bootstrapit config detected.";
     echo "Did you forget to update parameters in your 'bootstrapit.sh' ?"
     exit 1;
 fi
