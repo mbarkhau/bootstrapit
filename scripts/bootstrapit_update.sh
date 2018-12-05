@@ -360,6 +360,7 @@ copy_template setup.cfg;
 copy_template makefile;
 copy_template makefile.config.make;
 copy_template makefile.extra.make;
+copy_template activate;
 copy_template docker_base.Dockerfile;
 copy_template Dockerfile;
 
