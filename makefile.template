@@ -363,9 +363,9 @@ fmt:
 check:  fmt lint mypy test
 
 
-## Start shell with environ variables set.
-.PHONY: env
-env:
+## Start subshell with environ variables set.
+.PHONY: env_subshell
+env_subshell:
 	@bash --init-file <(echo '\
 		source $$HOME/.bashrc; \
 		source $(CONDA_ROOT)/etc/profile.d/conda.sh \
@@ -373,6 +373,34 @@ env:
 		export PYTHONPATH="src/:vendor/:$$PYTHONPATH"; \
 		conda activate $(DEV_ENV_NAME) \
 	')
+
+
+## Usage: "source activate", to deactivate: "deactivate"
+.PHONY: activate
+activate:
+	@echo 'source $(CONDA_ROOT)/etc/profile.d/conda.sh;'
+	@echo 'if [[ -z $$ENV ]]; then'
+	@echo '		export _env_before_activate_$(DEV_ENV_NAME)=$${ENV};'
+	@echo 'fi'
+	@echo 'if [[ -z $$PYTHONPATH ]]; then'
+	@echo '		export _pythonpath_before_activate_$(DEV_ENV_NAME)=$${PYTHONPATH};'
+	@echo 'fi'
+	@echo 'export ENV=$${ENV-dev};'
+	@echo 'export PYTHONPATH="src/:vendor/:$$PYTHONPATH";'
+	@echo 'conda activate $(DEV_ENV_NAME);'
+	@echo 'function deactivate {'
+	@echo '		if [[ -z $${_env_before_activate_$(DEV_ENV_NAME)} ]]; then'
+	@echo '				export ENV=$${_env_before_activate_$(DEV_ENV_NAME)}; '
+	@echo '		else'
+	@echo '				unset ENV;'
+	@echo '		fi'
+	@echo '		if [[ -z $${_pythonpath_before_activate_$(DEV_ENV_NAME)} ]]; then'
+	@echo '				export PYTHONPATH=$${_pythonpath_before_activate_$(DEV_ENV_NAME)}; '
+	@echo '		else'
+	@echo '				unset PYTHONPATH;'
+	@echo '		fi'
+	@echo '		conda deactivate;'
+	@echo '};'
 
 
 ## Drop into an ipython shell with correct env variables set
