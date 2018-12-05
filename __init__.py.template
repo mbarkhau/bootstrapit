@@ -1,2 +1,2 @@
 
-__version__ = "v${YEAR}${MONTH}.0001-alpha"
+__version__ = "${PACKAGE_VERSION}"

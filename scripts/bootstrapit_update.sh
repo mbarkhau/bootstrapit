@@ -103,6 +103,10 @@ if [[ -z $MODULE_NAME ]]; then
     MODULE_NAME=${PACKAGE_NAME};
 fi
 
+if [[ -z $PACKAGE_VERSION ]]; then
+    PACKAGE_VERSION="$(date + 'v%Y%m.0001-alpha')"
+fi
+
 if [[ -z $DEFAULT_PYTHON_VERSION ]]; then
     DEFAULT_PYTHON_VERSION="python=3.6";
 fi
@@ -280,6 +284,8 @@ function format_template()
         | sed "s;\${AUTHOR_CONTACT};${AUTHOR_CONTACT};g" \
         | sed "s;\${AUTHOR_EMAIL};${AUTHOR_EMAIL};g" \
         | sed "s;\${AUTHOR_NAME};${AUTHOR_NAME};g" \
+        | sed "s;\${PACKAGE_NAME};${PACKAGE_NAME};g" \
+        | sed "s;\${PACKAGE_VERSION};${PACKAGE_VERSION};g" \
         | sed "s;\${MODULE_NAME};${MODULE_NAME};g" \
         | sed "s;\${DESCRIPTION};${DESCRIPTION};g" \
         | sed "s;\${KEYWORDS};${KEYWORDS};g" \

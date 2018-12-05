@@ -65,12 +65,14 @@ addopts = --doctest-modules
 
 
 [pycalver]
-current_version = v${YEAR}${MONTH}.0001-alpha
+current_version = ${PACKAGE_VERSION}
 commit = True
 tag = True
 push = True
 
 [pycalver:file_patterns]
+bootstrapit.sh =
+    PACKAGE_VERSION="{version}"
 setup.cfg =
     current_version = {version}
 setup.py =
