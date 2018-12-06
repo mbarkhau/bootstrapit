@@ -1,6 +1,13 @@
 # This image is used for temporary stages that set up
 # the project specific dependencies, before they
 # are copied to the base image of a project.
+#
+# Generated using:
+#   $ git clone git@gitlab.com:mbarkhau/bootstrapit.git
+#   $ cd bootstrapit
+#   bootstrapit $ make build_docker
+#
+# pushes to registry.gitlab.com/mbarkhau/bootstrapit/env_builder
 
 FROM registry.gitlab.com/mbarkhau/bootstrapit/root
 
