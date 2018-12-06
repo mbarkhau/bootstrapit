@@ -4,7 +4,7 @@ SHELL := /bin/bash
 .SUFFIXES:
 
 
-VERSION := $(shell date -u +'%Y%m%dt%H%M%S')
+DOCKER_IMAGE_VERSION := $(shell date -u +'%Y%m%dt%H%M%S')
 
 
 ## Short help message for each task.
@@ -42,18 +42,16 @@ help:
 ## Build docker images for downstream projects
 .PHONY: build_docker
 build_docker:
-	@echo ${VERSION}
-
 	docker build \
 		--file docker_root.Dockerfile \
-		--tag registry.gitlab.com/mbarkhau/bootstrapit/root:$(VERSION) \
-		--tag registry.gitlab.com/mbarkhau/bootstrapit/root:latest \
+		--tag registry.gitlab.com/mbarkhau/bootstrapit/root:$(DOCKER_IMAGE_VERSION) \
+		--tag registry.gitlab.com/mbarkhau/bootstrapit/root \
 		.;
 
 	docker build \
 		--file docker_env_builder.Dockerfile \
-		--tag registry.gitlab.com/mbarkhau/bootstrapit/env_builder:$(VERSION) \
-		--tag registry.gitlab.com/mbarkhau/bootstrapit/env_builder:latest \
+		--tag registry.gitlab.com/mbarkhau/bootstrapit/env_builder:$(DOCKER_IMAGE_VERSION) \
+		--tag registry.gitlab.com/mbarkhau/bootstrapit/env_builder \
 		.;
 
 	docker push registry.gitlab.com/mbarkhau/bootstrapit/root;

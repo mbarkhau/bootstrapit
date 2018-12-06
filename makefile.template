@@ -60,7 +60,11 @@ DEV_ENV_PY := $(DEV_ENV)/bin/python
 
 RSA_KEY_PATH := ${HOME}/.ssh/${PKG_NAME}_gitlab_runner_id_rsa
 
-DOCKER_BASE_IMAGE := ${DOCKER_BASE_IMAGE}
+# https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375
+DOCKER_BASE_IMAGE := $(subst :latest,,${DOCKER_BASE_IMAGE})
+
+DOCKER_IMAGE_VERSION := $(shell date -u +'%Y%m%dt%H%M%S')
+
 
 build/envs.txt: requirements/conda.txt
 	@mkdir -p build/;
@@ -510,11 +514,13 @@ build_docker:
 		docker build \
 			--build-arg SSH_PRIVATE_RSA_KEY="$$(cat '${RSA_KEY_PATH}')" \
 			--file docker_base.Dockerfile \
+			--tag $(DOCKER_BASE_IMAGE):$(DOCKER_IMAGE_VERSION) \
 			--tag $(DOCKER_BASE_IMAGE) \
 			.; \
 	else \
 		docker build \
 			--file docker_base.Dockerfile \
+			--tag $(DOCKER_BASE_IMAGE):$(DOCKER_IMAGE_VERSION) \
 			--tag $(DOCKER_BASE_IMAGE) \
 			.; \
 	fi

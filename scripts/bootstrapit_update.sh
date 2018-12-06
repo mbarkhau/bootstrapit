@@ -239,7 +239,7 @@ if [[ -z "$DOCKER_REGISTRY_URL" ]]; then
 fi
 
 if [[ -z "$DOCKER_BASE_IMAGE" ]]; then
-    DOCKER_BASE_IMAGE=${DOCKER_REGISTRY_URL}/base:latest
+    DOCKER_BASE_IMAGE=${DOCKER_REGISTRY_URL}/base
 fi
 
 if [[ -z "$MODULE_NAME" ]]; then

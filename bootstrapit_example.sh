@@ -74,7 +74,7 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 # # but may be politically less viable in your organization.
 # DOCKER_ROOT_IMAGE=frolvlad/alpine-glibc
 # DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_DOMAIN}/${GIT_REPO_NAMESPACE}/${PACKAGE_NAME}
-# DOCKER_BASE_IMAGE=${DOCKER_REGISTRY_URL}/base:latest
+# DOCKER_BASE_IMAGE=${DOCKER_REGISTRY_URL}/base
 
 # LICENSE_NAME="Proprietary License"
 # classifiers: https://pypi.org/pypi?%3Aaction=list_classifiers
