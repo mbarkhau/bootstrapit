@@ -1,10 +1,10 @@
 # Stages:
-#   base_image : Common base image, both for the builder and for the final image.
+#   root       : Common image, both for the builder and for the final image.
 #                This contains only minimal dependencies required in both cases
 #                for miniconda and the makefile.
-#   builder    : stage in which the conda envrionment is created
+#   env_builder: stage in which the conda envrionment is created
 #                and dependencies are installed
-#   final      : the final image containing only the required environment files,
+#   base       : the final image containing only the required environment files,
 #                and none of the infrastructure required to generate them.
 
 FROM registry.gitlab.com/mbarkhau/bootstrapit/env_builder AS builder
