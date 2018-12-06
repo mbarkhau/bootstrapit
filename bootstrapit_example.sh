@@ -69,10 +69,8 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 # DOCKER_REGISTRY_DOMAIN=registry.gitlab.com
 # DOCKER_REGISTRY_DOMAIN=docker.yourdomain.com
 #
-# DOCKER_ROOT_IMAGE=debian:stable-slim
-# # The alpine-glibc image is a bit smaller than debian,
-# # but may be politically less viable in your organization.
-# DOCKER_ROOT_IMAGE=frolvlad/alpine-glibc
+# DOCKER_ROOT_IMAGE=registry.gitlab.com/mbarkhau/bootstrapit/root
+# DOCKER_ENV_BUILDER_IMAGE=registry.gitlab.com/mbarkhau/bootstrapit/env_builder
 # DOCKER_REGISTRY_URL=${DOCKER_REGISTRY_DOMAIN}/${GIT_REPO_NAMESPACE}/${PACKAGE_NAME}
 # DOCKER_BASE_IMAGE=${DOCKER_REGISTRY_URL}/base
 

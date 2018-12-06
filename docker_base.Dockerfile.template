@@ -7,7 +7,7 @@
 #   base       : the final image containing only the required environment files,
 #                and none of the infrastructure required to generate them.
 
-FROM registry.gitlab.com/mbarkhau/bootstrapit/env_builder AS builder
+FROM ${DOCKER_ENV_BUILDER_IMAGE} AS builder
 
 RUN mkdir /root/.ssh/ && \
     ssh-keyscan ${GIT_REPO_DOMAIN} >> /root/.ssh/known_hosts && \
@@ -57,7 +57,7 @@ RUN conda clean --all --yes && \
     rm -rf /opt/conda/pkgs/
 
 
-FROM registry.gitlab.com/mbarkhau/bootstrapit/root
+FROM ${DOCKER_ROOT_IMAGE}
 
 COPY --from=builder /opt/conda/ /opt/conda/
 COPY --from=builder /vendor/ /vendor
