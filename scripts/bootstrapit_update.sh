@@ -242,6 +242,10 @@ if [[ -z "$DOCKER_BASE_IMAGE" ]]; then
     DOCKER_BASE_IMAGE=${DOCKER_REGISTRY_URL}/base
 fi
 
+# strip off ":latest"
+# https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375
+DOCKER_BASE_IMAGE="$(dirname ${DOCKER_BASE_IMAGE})"/"$(basename ${DOCKER_BASE_IMAGE} ':latest')";
+
 if [[ -z "$MODULE_NAME" ]]; then
     MODULE_NAME=$( echo "${PACKAGE_NAME}" | tr '[:upper:]' '[:lower:]' | sed -E -e 's;-;_;g'; );
 fi

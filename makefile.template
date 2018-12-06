@@ -60,10 +60,9 @@ DEV_ENV_PY := $(DEV_ENV)/bin/python
 
 RSA_KEY_PATH := ${HOME}/.ssh/${PKG_NAME}_gitlab_runner_id_rsa
 
-# https://medium.com/@mccode/the-misunderstood-docker-tag-latest-af3babfd6375
-DOCKER_BASE_IMAGE := $(subst :latest,,${DOCKER_BASE_IMAGE})
+DOCKER_BASE_IMAGE := ${DOCKER_BASE_IMAGE}
 
-DOCKER_IMAGE_VERSION := $(shell date -u +'%Y%m%dt%H%M%S')
+DOCKER_IMAGE_VERSION := $(shell date -u +'%Y%m%dt%H%M%S')_$(shell git rev-parse --short HEAD)
 
 
 build/envs.txt: requirements/conda.txt

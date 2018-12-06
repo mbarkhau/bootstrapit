@@ -4,7 +4,7 @@ SHELL := /bin/bash
 .SUFFIXES:
 
 
-DOCKER_IMAGE_VERSION := $(shell date -u +'%Y%m%dt%H%M%S')
+DOCKER_IMAGE_VERSION := $(shell date -u +'%Y%m%dt%H%M%S')_$(shell git rev-parse --short HEAD)
 
 
 ## Short help message for each task.
