@@ -35,7 +35,7 @@ GIT_REPO_NAMESPACE="vandelay"
 GIT_REPO_DOMAIN="gitlab.com"
 
 # PACKAGE_VERSION="v201908.0001-alpha"
-PACKAGE_VERSION="$(date + 'v%Y%m.0001-alpha')"
+PACKAGE_VERSION="$(date +'v%Y%m.0001-alpha')"
 
 # These must be valid (space separated) conda package names.
 # A separate conda environment will be created for each of these.
