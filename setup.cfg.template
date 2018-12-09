@@ -80,5 +80,5 @@ setup.py =
 src/${MODULE_NAME}/__init__.py =
     __version__ = "{version}"
 README.md =
-    [PyCalVer {calver}{build}-{release}]
-    img.shields.io/badge/PyCalVer-{calver}{build}--{release}-blue
+    [PyCalVer {calver}{build}{release}]
+    https://img.shields.io/badge/PyCalVer-{calver}{build}-{release}-blue.svg
