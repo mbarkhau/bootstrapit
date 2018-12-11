@@ -379,7 +379,7 @@ env_subshell:
 	')
 
 
-## Usage: "source activate", to deactivate: "deactivate"
+## Usage: "source ./activate", to deactivate: "deactivate"
 .PHONY: activate
 activate:
 	@echo 'source $(CONDA_ROOT)/etc/profile.d/conda.sh;'
