@@ -42,10 +42,11 @@ CONDA_ENV_NAMES := \
 	$(subst pypy,$(PKG_NAME)_pypy,$(subst python=,$(PKG_NAME)_py,$(subst .,,$(SUPPORTED_PYTHON_VERSIONS))))
 
 CONDA_ENV_PATHS := \
-	$(subst pypy,${ENV_PREFIX}/$(PKG_NAME)_pypy,$(subst python=,${ENV_PREFIX}/$(PKG_NAME)_py,$(subst .,,$(SUPPORTED_PYTHON_VERSIONS))))
+	$(subst pypy,$(ENV_PREFIX)/$(PKG_NAME)_pypy,$(subst python=,$(ENV_PREFIX)/$(PKG_NAME)_py,$(subst .,,$(SUPPORTED_PYTHON_VERSIONS))))
 
 
-literal_space := $() $()
+empty :=
+literal_space := $(empty) $(empty)
 
 BDIST_WHEEL_PYTHON_TAG := \
 	$(subst python,py,$(subst $(literal_space),.,$(subst .,,$(subst =,,$(SUPPORTED_PYTHON_VERSIONS)))))
@@ -59,7 +60,7 @@ BDIST_WHEEL_FILE_CMD = ls -1t dist/*.whl | head -n 1
 DEV_ENV := $(ENV_PREFIX)/$(DEV_ENV_NAME)
 DEV_ENV_PY := $(DEV_ENV)/bin/python
 
-RSA_KEY_PATH := ${HOME}/.ssh/${PKG_NAME}_gitlab_runner_id_rsa
+RSA_KEY_PATH := $(HOME)/.ssh/$(PKG_NAME)_gitlab_runner_id_rsa
 
 DOCKER_BASE_IMAGE := ${DOCKER_BASE_IMAGE}
 
@@ -130,7 +131,7 @@ build/deps.txt: build/envs.txt requirements/*.txt
 	@rm -f build/deps.txt.tmp;
 
 	@for env_name in $(CONDA_ENV_NAMES); do \
-		env_py="${ENV_PREFIX}/$${env_name}/bin/python"; \
+		env_py="$(ENV_PREFIX)/$${env_name}/bin/python"; \
 		printf "\npip freeze for $${env_name}:\n" >> build/deps.txt.tmp; \
 		$${env_py} -m pip freeze >> build/deps.txt.tmp; \
 		printf "\n\n" >> build/deps.txt.tmp; \
@@ -232,7 +233,7 @@ fullhelp:
 .PHONY: clean
 clean:
 	@for env_name in $(CONDA_ENV_NAMES); do \
-		env_py="${ENV_PREFIX}/$${env_name}/bin/python"; \
+		env_py="$(ENV_PREFIX)/$${env_name}/bin/python"; \
 		if [[ -f $${env_py} ]]; then \
 			$(CONDA_BIN) env remove --name $${env_name} --yes; \
 		fi; \
@@ -280,8 +281,8 @@ update: build/deps.txt
 ## Install git pre-push hooks
 .PHONY: git_hooks
 git_hooks:
-	@rm -f "${PWD}/.git/hooks/pre-push"
-	ln -s "${PWD}/scripts/pre-push-hook.sh" "${PWD}/.git/hooks/pre-push"
+	@rm -f "$(PWD)/.git/hooks/pre-push"
+	ln -s "$(PWD)/scripts/pre-push-hook.sh" "$(PWD)/.git/hooks/pre-push"
 
 
 ## -- Integration --
@@ -501,7 +502,7 @@ publish: bump_version build_dists upload_dists
 
 ## Build docker images. Must be run when dependencies are added
 ##   or updated. The main reasons this can fail are:
-##   1. No ssh key at $(HOME)/.ssh/${PKG_NAME}_gitlab_runner_id_rsa
+##   1. No ssh key at $(HOME)/.ssh/$(PKG_NAME)_gitlab_runner_id_rsa
 ##      (which is needed to install packages from private repos
 ##      and is copied into a temp container during the build).
 ##   2. Your docker daemon is not running
@@ -509,9 +510,9 @@ publish: bump_version build_dists upload_dists
 ##   4. You're using WSL but didn't do export DOCKER_HOST="tcp://localhost:2375"
 .PHONY: build_docker
 build_docker:
-	@if [[ -f "${RSA_KEY_PATH}" ]]; then \
+	@if [[ -f "$(RSA_KEY_PATH)" ]]; then \
 		docker build \
-			--build-arg SSH_PRIVATE_RSA_KEY="$$(cat '${RSA_KEY_PATH}')" \
+			--build-arg SSH_PRIVATE_RSA_KEY="$$(cat '$(RSA_KEY_PATH)')" \
 			--file docker_base.Dockerfile \
 			--tag $(DOCKER_BASE_IMAGE):$(DOCKER_IMAGE_VERSION) \
 			--tag $(DOCKER_BASE_IMAGE) \
