@@ -64,7 +64,8 @@ RSA_KEY_PATH := $(HOME)/.ssh/$(PKG_NAME)_gitlab_runner_id_rsa
 
 DOCKER_BASE_IMAGE := ${DOCKER_BASE_IMAGE}
 
-DOCKER_IMAGE_VERSION := $(shell date -u +'%Y%m%dt%H%M%S')_$(shell git rev-parse --short HEAD)
+GIT_HEAD_REV = $(shell git rev-parse --short HEAD)
+DOCKER_IMAGE_VERSION = $(shell date -u +'%Y%m%dt%H%M%S')_$(GIT_HEAD_REV)
 
 
 build/envs.txt: requirements/conda.txt
