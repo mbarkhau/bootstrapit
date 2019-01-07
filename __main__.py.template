@@ -21,6 +21,7 @@ def cli() -> None:
 
 
 @cli.command()
+@click.version_option(version="${PACKAGE_VERSION}")
 def version() -> None:
     """Show version number."""
     print(f"${MODULE_NAME} version: {${MODULE_NAME}.__version__}")

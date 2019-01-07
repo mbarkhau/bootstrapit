@@ -45,7 +45,7 @@ Code Quality/CI:
 [license_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/blob/master/LICENSE
 
 [mypy_img]: https://img.shields.io/badge/mypy-checked-green.svg
-[mypy_ref]: http://mypy-lang.org/
+[mypy_ref]: ${PAGES_URL}mypycov
 
 [style_img]: https://img.shields.io/badge/code%20style-%20sjfmt-f71.svg
 [style_ref]: https://gitlab.com/mbarkhau/straitjacket/
@@ -53,10 +53,10 @@ Code Quality/CI:
 [pypi_img]: https://img.shields.io/badge/PyPI-wheels-green.svg
 [pypi_ref]: https://pypi.org/project/${GIT_REPO_NAME}/#files
 
-[downloads_img]: https://pepy.tech/badge/${GIT_REPO_NAME}
+[downloads_img]: https://pepy.tech/badge/${GIT_REPO_NAME}/month
 [downloads_ref]: https://pepy.tech/project/${GIT_REPO_NAME}
 
-[version_img]: https://img.shields.io/badge/PyCalVer-v${YEAR}${MONTH}.0001--alpha-blue.svg
+[version_img]: https://img.shields.io/badge/PyCalVer-v${YEAR}${MONTH}.0001-blue.svg
 [version_ref]: https://pypi.org/project/pycalver/
 
 [pyversions_img]: https://img.shields.io/pypi/pyversions/${GIT_REPO_NAME}.svg

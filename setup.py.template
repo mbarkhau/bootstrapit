@@ -48,6 +48,8 @@ setuptools.setup(
     """,
     python_requires=">=3.6",
     zip_safe=True,
+
+    # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Environment :: Console",

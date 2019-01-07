@@ -79,6 +79,8 @@ setup.py =
     version="{pep440_version}"
 src/${MODULE_NAME}/__init__.py =
     __version__ = "{version}"
+src/${MODULE_NAME}/__main__.py =
+    @click.version_option(version="{version}")
 README.md =
     [PyCalVer {calver}{build}{release}]
-    https://img.shields.io/badge/PyCalVer-{calver}{build}-{release}-blue.svg
+    https://img.shields.io/badge/PyCalVer-{calver}{build}-blue.svg

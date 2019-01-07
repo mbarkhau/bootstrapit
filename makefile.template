@@ -133,7 +133,7 @@ build/deps.txt: build/envs.txt requirements/*.txt
 
 	@for env_name in $(CONDA_ENV_NAMES); do \
 		env_py="$(ENV_PREFIX)/$${env_name}/bin/python"; \
-		printf "\npip freeze for $${env_name}:\n" >> build/deps.txt.tmp; \
+		printf "\n# pip freeze for $${env_name}:\n" >> build/deps.txt.tmp; \
 		$${env_py} -m pip freeze >> build/deps.txt.tmp; \
 		printf "\n\n" >> build/deps.txt.tmp; \
 	done
@@ -303,7 +303,9 @@ mypy:
 	@rm -rf ".mypy_cache";
 
 	@printf "mypy ....\n"
-	@MYPYPATH=stubs/:vendor/ $(DEV_ENV_PY) -m mypy src/
+	@MYPYPATH=stubs/:vendor/ $(DEV_ENV_PY) -m mypy \
+		--html-report mypycov \
+		src/ | sed "/Generated HTML report/d"
 	@printf "\e[1F\e[9C ok\n"
 
 
@@ -364,7 +366,7 @@ fmt:
 		 src/ test/
 
 
-## Shortcut for make fmt lint pylint test
+## Shortcut for make fmt lint mypy test
 .PHONY: check
 check:  fmt lint mypy test
 
@@ -449,6 +451,13 @@ endif
 	@rm -rf "test/__pycache__";
 
 
+## Run `make lint mypy test` using docker
+.PHONY: citest
+citest:
+	docker build --file Dockerfile --tag tmp_citest_$(PKG_NAME) .
+	docker run --tty tmp_citest_$(PKG_NAME) make lint mypy test
+
+
 ## -- Build/Deploy --
 
 
@@ -480,6 +489,7 @@ bump_version:
 build_dists:
 	$(DEV_ENV_PY) setup.py sdist;
 	$(DEV_ENV_PY) setup.py bdist_wheel --python-tag=$(BDIST_WHEEL_PYTHON_TAG);
+	@rm -rf src/*.egg-info
 
 
 ## Upload sdist and bdist files to pypi
@@ -496,7 +506,7 @@ upload_dists:
 	$(DEV_ENV)/bin/twine upload $$($(SDIST_FILE_CMD)) $$($(BDIST_WHEEL_FILE_CMD));
 
 
-## Publish on pypi
+## bump_version build_dists upload_dists
 .PHONY: publish
 publish: bump_version build_dists upload_dists
 
