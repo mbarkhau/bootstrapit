@@ -203,8 +203,8 @@ help:
 
 
 ## Full help message for each task.
-.PHONY: fullhelp
-fullhelp:
+.PHONY: helpverbose
+helpverbose:
 	@printf "Available make targets for \033[97m$(PKG_NAME)\033[0m:\n";
 
 	@awk '{ \
