@@ -56,7 +56,7 @@ Code Quality/CI:
 [downloads_img]: https://pepy.tech/badge/${GIT_REPO_NAME}/month
 [downloads_ref]: https://pepy.tech/project/${GIT_REPO_NAME}
 
-[version_img]: https://img.shields.io/badge/PyCalVer-v${YEAR}${MONTH}.0001-blue.svg
+[version_img]: https://img.shields.io/static/v1.svg?label=PyCalVer&message=v${YEAR}${MONTH}.0001-alpha&color=blue
 [version_ref]: https://pypi.org/project/pycalver/
 
 [pyversions_img]: https://img.shields.io/pypi/pyversions/${GIT_REPO_NAME}.svg
