@@ -40,8 +40,8 @@ help:
 
 
 ## Build docker images for downstream projects
-.PHONY: build_docker
-build_docker:
+.PHONY: docker_build
+docker_build:
 	docker build \
 		--file docker_root.Dockerfile \
 		--tag registry.gitlab.com/mbarkhau/bootstrapit/root:$(DOCKER_IMAGE_VERSION) \

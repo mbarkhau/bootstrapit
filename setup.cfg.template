@@ -88,5 +88,5 @@ src/${MODULE_NAME}/__init__.py =
 src/${MODULE_NAME}/__main__.py =
     @click.version_option(version="{version}")
 README.md =
-    [PyCalVer {calver}{build}{release}]
+    [PyCalVer {version}]
     https://img.shields.io/static/v1.svg?label=PyCalVer&message={version}&color=blue
