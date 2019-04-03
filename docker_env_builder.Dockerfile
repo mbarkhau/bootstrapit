@@ -16,7 +16,7 @@ RUN apt-get --yes install ca-certificates openssh-client;
 ENV CONDA_DIR /opt/conda
 ENV PATH $CONDA_DIR/bin:$PATH
 
-ENV MINICONDA_VER latest
+ENV MINICONDA_VER 4.5.12
 ENV MINICONDA Miniconda3-$MINICONDA_VER-Linux-x86_64.sh
 ENV MINICONDA_URL https://repo.continuum.io/miniconda/$MINICONDA
 
