@@ -16,8 +16,13 @@ RUN apt-get --yes install ca-certificates openssh-client;
 ENV CONDA_DIR /opt/conda
 ENV PATH $CONDA_DIR/bin:$PATH
 
-ENV MINICONDA_VER 4.5.12
-ENV MINICONDA Miniconda3-$MINICONDA_VER-Linux-x86_64.sh
+# The latest version of conda can be newer than the latest
+# version for which an installer is available. Further
+# down we invoke "conda update --all" to update to the lates
+# version. This Marker is incremented when we know such an
+# update was published and want to update the image.
+ENV MINICONDA_VERSION_MARKER 4.6.11
+ENV MINICONDA Miniconda3-latest-Linux-x86_64.sh
 ENV MINICONDA_URL https://repo.continuum.io/miniconda/$MINICONDA
 
 RUN curl -L "$MINICONDA_URL" --silent -o miniconda3.sh && \
