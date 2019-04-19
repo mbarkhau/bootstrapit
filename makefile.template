@@ -359,7 +359,7 @@ test:
 	for i in $${!env_py_paths[@]}; do \
 		env_py=$${env_py_paths[i]}; \
 		$${env_py} -m pip install --upgrade .; \
-		ENV=$${ENV-dev} $${env_py} -m pytest test/; \
+		PYTHONPATH="" ENV=$${ENV-dev} $${env_py} -m pytest test/; \
 	done;
 
 	@rm -rf ".pytest_cache";
