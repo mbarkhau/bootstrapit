@@ -101,6 +101,10 @@ done
 
 if [[ -z $MODULE_NAME ]]; then
     MODULE_NAME=${PACKAGE_NAME};
+    # replace "-"" with "_"
+    MODULE_NAME=${MODULE_NAME//-/_};
+    # lower case
+    MODULE_NAME=${MODULE_NAME,,};
 fi
 
 if [[ -z $PACKAGE_VERSION ]]; then

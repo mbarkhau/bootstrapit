@@ -1,5 +1,11 @@
 #!/bin/bash
 # Bootstrapit Project Configuration
+#
+# Variables that are commented out can left as is
+# if you are satisfied with the automatically
+# derived default. For example, if you specify,
+# LICENSE_ID="MIT" then the value for LICENSE_NAME
+# will be "MIT License".
 
 # Author info is used to populate
 #  - License Info
@@ -12,27 +18,10 @@ AUTHOR_EMAIL="info@vandelay.industries"
 KEYWORDS="keywords used on pypi"
 DESCRIPTION="Example description."
 
-# Valid Options are "None" or any valid SPDX Identifier:
-#   - None (All Rights Reserved)
-#   - MIT
-#   - GPL-3.0-only
-#   - Apache-2.0
-#   - GPL-2.0-only
-#   - BSD-3-Clause
-#   - AGPL-3.0-only
-#   - LGPL-3.0-only
-#   - MPL-2.0
-#
-# See: https://choosealicense.com/licenses/
-# License text pulled from:
-#   https://github.com/spdx/license-list-data/tree/master/text
-
-LICENSE_ID="MIT"
-
-PACKAGE_NAME="mypackagename"
-# MODULE_NAME="${PACKAGE_NAME}"
-GIT_REPO_NAMESPACE="vandelay"
 GIT_REPO_DOMAIN="gitlab.com"
+GIT_REPO_NAMESPACE="vandelay"
+PACKAGE_NAME="my-package-name"
+# MODULE_NAME="my_package_name"
 
 # PACKAGE_VERSION="v201908.0001-alpha"
 # PACKAGE_VERSION="v0.1.0"
@@ -54,6 +43,22 @@ DEFAULT_PYTHON_VERSION="python=3.6"
 
 # GIT_REPO_URL=https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${PACKAGE_NAME}
 
+# Valid Options are "None" or any valid SPDX Identifier:
+#   - None (All Rights Reserved)
+#   - MIT
+#   - GPL-3.0-only
+#   - Apache-2.0
+#   - GPL-2.0-only
+#   - BSD-3-Clause
+#   - AGPL-3.0-only
+#   - LGPL-3.0-only
+#   - MPL-2.0
+#
+# See: https://choosealicense.com/licenses/
+# License text pulled from:
+#   https://github.com/spdx/license-list-data/tree/master/text
+
+LICENSE_ID="MIT"
 
 # SPDX_LICENSE_ID="MIT"
 # LICENSE_NAME="MIT License"
