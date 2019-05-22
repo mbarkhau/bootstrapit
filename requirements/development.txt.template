@@ -38,4 +38,10 @@ ipython     # nuff said
 
 # A command line utility to display dependency tree of the installed Python packages
 # https://github.com/naiquevin/pipdeptree
+#
+# For graph output you will need to:
+# $ sudo apt install -y graphviz
+# $ pipdeptree --graph-output svg > requirements/tree.svg
 pipdeptree
+graphviz
+
