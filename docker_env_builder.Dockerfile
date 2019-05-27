@@ -28,7 +28,7 @@ ENV MINICONDA_URL https://repo.continuum.io/miniconda/$MINICONDA
 RUN curl -L "$MINICONDA_URL" --silent -o miniconda3.sh && \
     /bin/bash miniconda3.sh -f -b -p $CONDA_DIR && \
     rm miniconda3.sh && \
-    /opt/conda/bin/conda clean -tipsy && \
+    /opt/conda/bin/conda clean -tipy && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
     echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
     echo "conda activate base" >> ~/.bashrc && \
