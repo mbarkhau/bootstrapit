@@ -401,7 +401,7 @@ chmod +x "${PROJECT_DIR}/scripts/pre-push-hook.sh";
 
 head -n 7 "${PROJECT_DIR}/license.header" \
     | tail -n +3 \
-    | sed -re 's/(^   |^$)/#/g' \
+    | sed -E 's/(^   |^$)/#/g' \
     > /tmp/.py_license.header;
 
 src_files="${PROJECT_DIR}/src/*/*.py"
