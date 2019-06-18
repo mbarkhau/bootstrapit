@@ -24,7 +24,7 @@ Code Quality/CI:
 <!--
   To update the TOC:
   $ pip install md-toc
-  $ md_toc -i gitlab README.md
+  $ md_toc --in-place README.md gitlab
 -->
 
 
