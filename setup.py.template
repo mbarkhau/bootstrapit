@@ -39,7 +39,7 @@ setuptools.setup(
     description="${DESCRIPTION}",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    packages=["${MODULE_NAME}"],
+    packages=setuptools.find_packages("src/"),
     package_dir={"": "src"},
     install_requires=install_requires,
     entry_points="""
