@@ -7,8 +7,12 @@ import ${MODULE_NAME}
 # To enable pretty tracebacks:
 #   echo "export ENABLE_BACKTRACE=1;" >> ~/.bashrc
 if os.environ.get('ENABLE_BACKTRACE') == "1":
-    import backtrace
-    backtrace.hook(align=True, strip_path=True, enable_on_envvar_only=True)
+    try:
+        import backtrace
+        backtrace.hook(align=True, strip_path=True, enable_on_envvar_only=True)
+    except ImportError:
+        # don't fail just because of missing dev library
+        pass
 
 
 click.disable_unicode_literals_warning = True
