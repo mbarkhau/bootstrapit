@@ -45,3 +45,5 @@ ipython     # nuff said
 pipdeptree
 graphviz
 
+# run failed tests first
+pytest-cache
