@@ -7,11 +7,17 @@
 #
 # No dependencies required for production should be listed here.
 
+# http://www.pydocstyle.org/en/4.0.0/release_notes.html
+# Support for Python 2.x and PyPy has been dropped (#340).
+pydocstyle<4
+
+
 flake8
 flake8-bugbear
 flake8-docstrings
 flake8-builtins
 flake8-comprehensions
+flake8-junit-report
 pylint
 mypy
 
@@ -21,6 +27,7 @@ mypy
 # pytest 5.0 and onwards will support only Python 3.5+.
 pytest<5.0
 pytest-cov
+pytest-html
 
 readme_renderer[md]
 twine
