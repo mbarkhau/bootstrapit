@@ -8,7 +8,7 @@
 #   bootstrapit $ make build_docker
 #
 # pushes to registry.gitlab.com/mbarkhau/bootstrapit/root
-FROM debian:stable-slim
+FROM debian:stretch-slim
 
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
