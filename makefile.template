@@ -302,11 +302,18 @@ git_hooks:
 ## -- Integration --
 
 
-## Run flake8 linter
+## Run flake8 linter and check for fmt
 .PHONY: lint
 lint:
-	@printf "flake8 ..\n"
-	@$(DEV_ENV)/bin/flake8 src/
+	@printf "isort ..\n"
+	@$(DEV_ENV)/bin/isort \
+		--check-only \
+		--force-single-line-imports \
+		--length-sort \
+		--recursive \
+		--line-width=$(MAX_LINE_LEN) \
+		--project $(PKG_NAME) \
+		src/ test/
 	@printf "\e[1F\e[9C ok\n"
 
 	@printf "sjfmt ..\n"
@@ -316,6 +323,10 @@ lint:
 		--line-length=$(MAX_LINE_LEN) \
 		--check \
 		src/ test/ 2>&1 | sed "/All done/d" | sed "/left unchanged/d"
+	@printf "\e[1F\e[9C ok\n"
+
+	@printf "flake8 ..\n"
+	@$(DEV_ENV)/bin/flake8 src/
 	@printf "\e[1F\e[9C ok\n"
 
 
@@ -384,11 +395,19 @@ test:
 ## Run code formatter on src/ and test/
 .PHONY: fmt
 fmt:
+	@$(DEV_ENV)/bin/isort \
+		--force-single-line-imports \
+		--length-sort \
+		--recursive \
+		--line-width=$(MAX_LINE_LEN) \
+		--project $(PKG_NAME) \
+		src/ test/;
+
 	@$(DEV_ENV)/bin/sjfmt \
 		--target-version=py36 \
 		--skip-string-normalization \
 		--line-length=$(MAX_LINE_LEN) \
-		src/ test/
+		src/ test/;
 
 
 
