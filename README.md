@@ -45,9 +45,9 @@ PROJECT_DIR=$(dirname "$0");
 source "$PROJECT_DIR/scripts/bootstrapit_update.sh";
 ```
 
-Running this file will modify files in your project directors, so
-be sure to commit any changes first, so you can see what is
-changed by running the script.
+Running this file will modify files in your project directory, so
+be sure to commit any changes first. This way you can see what the
+script has changed by running git diff.
 
 ```session
 $ bash bootstrapit.sh
