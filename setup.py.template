@@ -29,7 +29,7 @@ long_description = "\n\n".join((read("README.md"), read("CHANGELOG.md")))
 
 
 # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
-classifiers=[
+classifiers = [
     "Development Status :: 3 - Alpha",
     "Environment :: Console",
     "Environment :: Other Environment",
@@ -92,5 +92,5 @@ setuptools.setup(
     """,
     python_requires=">=3.6",
     zip_safe=True,
-    classifiers,
+    classifiers=classifiers,
 )
