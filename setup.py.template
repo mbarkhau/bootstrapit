@@ -5,6 +5,7 @@
 # SPDX-License-Identifier: ${SPDX_LICENSE_ID}
 
 import os
+import sys
 import setuptools
 
 
