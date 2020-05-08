@@ -19,3 +19,14 @@ DEVELOPMENT_PYTHON_VERSION := ${DEFAULT_PYTHON_VERSION}
 # - pypy2.7
 # - pypy3.5
 SUPPORTED_PYTHON_VERSIONS := ${SUPPORTED_PYTHON_VERSIONS}
+
+include makefile.bootstrapit.make
+
+## -- Extra/Custom/Project Specific Tasks --
+
+## Start the development http server in debug mode
+##    This is just to illustrate how to add your
+##    extra targets outside of the main makefile.
+.PHONY: serve
+serve:
+    echo "Not Implemented"

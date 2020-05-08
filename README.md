@@ -60,15 +60,14 @@ The following files and configurations are applied by `bootstrapit.sh`.
 |               -                |                                                                  Description                                                                   |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | `bootstrapit.sh`               | Entry point for bootstrapit, containing project configuration.                                                                                 |
-| `makefile`                     | Various tasks to setup project and python environment.                                                                                         |
+| `makefile`                     | Configuration (package name and python versions) and project specific make targets.                                                            |
+| `makefile.bootstrapit.make`    | General make targets to setup project and python environment.                                                                                  |
 | `$ make install/update`        | Create conda environments for all configured python versions and install requirements.                                                         |
 | `$ make lint`                  | Linting using flake8                                                                                                                           |
+| `$ make fmt`                   | Code Formatting [straitjacket](https://pypi.org/project/straitjacket/)                                                                         |
 | `$ make mypy`                  | Type checking using [mypy](http://mypy-lang.org/)                                                                                              |
 | `$ make test`                  | Run tests using [pytest](https://docs.pytest.org/en/latest/) with [pytest-cov](https://pytest-cov.readthedocs.io/en/latest/) for code coverage |
-| `$ make fmt`                   | Code Formatting [straitjacket](https://pypi.org/project/straitjacket/)                                                                         |
 | `$ make bump_version`          | Versioning using [PyCalVer](https://pypi.org/project/pycalver/)                                                                                |
-| `makefile.config.make`         | Configuration for makefile (package name and python versions).                                                                                 |
-| `makefile.extra.make`          | Custom (project specific) make targets.                                                                                                        |
 | `.gitignore`                   | ...                                                                                                                                            |
 | `setup.py`                     | ...                                                                                                                                            |
 | `setup.cfg`                    | Configuration for `lint`, `test`, `mypy` and `bump_version`.                                                                                   |
@@ -89,6 +88,6 @@ The following files and configurations are applied by `bootstrapit.sh`.
 | `LICENSE`                      | License text based on `LICENSE_ID` chosen in `bootstrapit.sh` (default: MIT).                                                                  |
 | `license.header`               | Short license text to be included in the header of source files.                                                                               |
 | `.gitlab-ci.yml`               | Default Gitlab CI build, performing `make lint` and `make test`                                                                                |
-| `$ make build_docker`          | Build the docker image and push it, to the configured docker regestry.                                                                         |
+| `$ make docker_build`          | Build the docker image and push it, to the configured docker regestry.                                                                         |
 | `docker_base.Dockerfile`       | Dockerfile for image referenced by `.gitlab-ci.yml`.                                                                                           |
 
