@@ -14,7 +14,6 @@ ignore_missing_imports = True
 show_error_codes = True
 
 [tool:isort]
-known_first_party = markdown_katex
 known_third_party = pathlib2
 force_single_line = True
 length_sort = True
@@ -124,6 +123,7 @@ disable =
     no-else-return,
     no-else-raise,
     bad-whitespace,
+    bad-continuation,
     missing-module-docstring,
     missing-class-docstring,
     missing-function-docstring,
