@@ -308,7 +308,6 @@ lint_isort:
 		--check-only \
 		--force-single-line-imports \
 		--length-sort \
-		--recursive \
 		--line-width=$(MAX_LINE_LEN) \
 		--project $(PKG_NAME) \
 		src/ test/
@@ -410,7 +409,6 @@ fmt_isort:
 	@$(DEV_ENV)/bin/isort \
 		--force-single-line-imports \
 		--length-sort \
-		--recursive \
 		--line-width=$(MAX_LINE_LEN) \
 		--project $(PKG_NAME) \
 		src/ test/;
