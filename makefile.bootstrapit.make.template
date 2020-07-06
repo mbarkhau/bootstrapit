@@ -338,7 +338,7 @@ lint_flake8:
 
 ## Run flake8 linter and check for fmt
 .PHONY: lint
-lint: lint_isort lint_sjfmt
+lint: lint_isort lint_sjfmt lint_flake8
 
 
 ## Run mypy type checker
