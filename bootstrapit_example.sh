@@ -23,23 +23,25 @@ GIT_REPO_NAMESPACE="vandelay"
 PACKAGE_NAME="my-package-name"
 # MODULE_NAME="my_package_name"
 
-# PACKAGE_VERSION="v201908.0001-alpha"
+# PACKAGE_VERSION="v202008.1001-alpha"
 # PACKAGE_VERSION="v0.1.0"
-PACKAGE_VERSION="$(date +'v%Y%m.0001-alpha')"
+PACKAGE_VERSION="$(date +'v%Y%m.1001-alpha')"
 
 # These must be valid (space separated) conda package names.
 # A separate conda environment will be created for each of these.
 #
-# Some valid options (as of late 2018) are:
+# Some valid options (as of late 2020) are:
 # - python=2.7
 # - python=3.5
 # - python=3.6
 # - python=3.7
+# - python=3.8
 # - pypy2.7
 # - pypy3.5
+# - pypy3.6
 
-DEFAULT_PYTHON_VERSION="python=3.6"
-# SUPPORTED_PYTHON_VERSIONS="python=3.6 python=3.7"
+DEFAULT_PYTHON_VERSION="python=3.8"
+# SUPPORTED_PYTHON_VERSIONS="python=3.8 python=3.7 pypy3.6"
 
 # GIT_REPO_URL=https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${PACKAGE_NAME}
 
@@ -93,7 +95,7 @@ IS_PUBLIC=0
 
 if [[ $KEYWORDS == "keywords used on pypi" ]]; then
     echo "FAILSAFE! Default bootstrapit config detected.";
-    echo "Did you forget to update parameters in your 'bootstrapit.sh' ?"
+    echo "Maybe you forgot to edit 'bootstrapit.sh' ?"
     exit 1;
 fi
 
