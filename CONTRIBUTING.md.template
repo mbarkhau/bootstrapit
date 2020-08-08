@@ -368,6 +368,37 @@ Slightly less common but good to run before doing `git push`.
   want to trigger dozens of CI builds to debug a tricky issue.
 
 
+### Packaging/Distribution
+
+Publishing a package is done using twine, for which you will need to somehow supply your pypi authentication. I haven't tried [keyring-support](https://twine.readthedocs.io/en/latest/#keyring-support), but your welcome to give that a shot. Another way is to add an entry in your `~/.pypirc`:
+
+
+```
+[distutils]
+index-servers =
+    pypi
+    pypi-legacy
+
+[pypi]
+repository = https://pypi.org
+username = Your.Username
+password = secret
+
+[pypi-legacy]
+repository = https://upload.pypi.org/legacy/
+username = Your.Username
+password = secret
+```
+
+Creating a new package and uploading it to pypi will typically involve these steps:
+
+- `make lint mypy test`: Run CI locally, in case you don't trust the CI setup.
+- `make bump_version`: Increment project wide version numbers and tag commit.
+- `git push`: Push the bumped version.
+- `make dist_build`: Create the .whl and .tar.gz distributions.
+- `make dist_upload`: Publish to pypi.
+
+
 ### Docker
 
 The base image of the project is `docker_base.Dockerfile` which is
