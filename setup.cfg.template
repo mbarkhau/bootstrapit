@@ -19,7 +19,7 @@ warn_redundant_casts = True
 
 
 [tool:isort]
-known_third_party = pathlib2
+known_third_party = click,pathlib2
 force_single_line = True
 length_sort = True
 line_length = 100
@@ -105,7 +105,7 @@ bootstrapit.sh =
 setup.cfg =
     current_version = {version}
 setup.py =
-    version="{pep440_version}"
+    version="{version}"
 src/${MODULE_NAME}/__init__.py =
     __version__ = "{version}"
 src/${MODULE_NAME}/__main__.py =

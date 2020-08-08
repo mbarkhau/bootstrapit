@@ -23,9 +23,9 @@ GIT_REPO_NAMESPACE="vandelay"
 PACKAGE_NAME="my-package-name"
 # MODULE_NAME="my_package_name"
 
-# PACKAGE_VERSION="v202008.1001-alpha"
+# PACKAGE_VERSION="2020.1001-alpha"
 # PACKAGE_VERSION="v0.1.0"
-PACKAGE_VERSION="$(date +'v%Y%m.1001-alpha')"
+PACKAGE_VERSION="$(date +'%Y.1001-alpha')"
 
 # These must be valid (space separated) conda package names.
 # A separate conda environment will be created for each of these.
