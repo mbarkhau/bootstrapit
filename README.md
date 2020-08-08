@@ -62,7 +62,7 @@ The following files and configurations are applied by `bootstrapit.sh`.
 | `bootstrapit.sh`               | Entry point for bootstrapit, containing project configuration.                                                                                 |
 | `makefile`                     | Configuration (package name and python versions) and project specific make targets.                                                            |
 | `makefile.bootstrapit.make`    | General make targets to setup project and python environment.                                                                                  |
-| `$ make install/update`        | Create conda environments for all configured python versions and install requirements.                                                         |
+| `$ make conda`                 | Create conda environments for all configured python versions and install requirements.                                                         |
 | `$ make lint`                  | Linting using flake8                                                                                                                           |
 | `$ make fmt`                   | Code Formatting [straitjacket](https://pypi.org/project/straitjacket/)                                                                         |
 | `$ make mypy`                  | Type checking using [mypy](http://mypy-lang.org/)                                                                                              |

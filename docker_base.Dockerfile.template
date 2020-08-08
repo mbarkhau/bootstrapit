@@ -35,7 +35,7 @@ ADD scripts/ scripts/
 ADD makefile.bootstrapit.make makefile.bootstrapit.make
 ADD makefile makefile
 
-RUN make install
+RUN make conda
 
 RUN rm -f /root/.ssh/id_rsa
 

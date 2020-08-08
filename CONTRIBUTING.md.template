@@ -41,11 +41,9 @@ steps and not encounter any errors:
 
  1. `git clone <project_url>`
  2. `cd <project>`
- 3. `make install`
+ 3. `make conda`
  4. `# get some coffee`
- 5. `make lint`
- 6. `make test`
- 7. `make serve`
+ 5. `make fmt lint mypy test`
 
 If you as a new contributor encounter any errors, then please create
 an issue report and you will already have made a great contribution!
@@ -96,7 +94,7 @@ Cloning Git repository git@../group/project.git to project
 $ cd project
 
 dev@host:~/project
-$ make install
+$ make conda
 Solving environment:
 ...
 ```
@@ -267,7 +265,7 @@ When adding a new dependency please consider:
 
 One argument against this approach is the issue of rogue package
 maintainers. A package maintainer might release a new version which
-you automatically install using `make update`, and this new code opens
+you automatically install using `make conda`, and this new code opens
 a back door or proceeds to send data from your production system to a
 random server on the internet.
 
@@ -309,12 +307,12 @@ Choose a file:
   written using mypy. This allows the mypy type checker to work with
   types defined in other packages
 
-After adding a new dependency, you can run `make update`
+After adding a new dependency, you can run `make conda`
 
 
 ```shell
 (myproject_py36) dev@host:~/myproject
-$ make update
+$ make conda
 Solving environment: done
 
 Downloading and Extracting Packages
@@ -322,10 +320,10 @@ requests-2.19.1        | 94 KB  conda-forge
 ...
 ```
 
-Normally make update only does something if you update one of the
-`requirements/*.txt` files has changed. If you know a dependency
-was updated, and `make update` is not having an effect, you can
-force the update using `make force update`.
+Normally `make conda` only does something if you update one of the
+`requirements/*.txt` files. If you know a dependency was updated, and
+`make conda` is not having an effect, you can force the update using
+`make force conda`.
 
 
 ### Vendoring
@@ -352,7 +350,7 @@ contribute to the upstream project when possible.
 
 The typical commands used during development are:
 
-- `make install`: Setup virtual environment
+- `make conda`: Setup virtual environment
 - `source activate`: Activate virtual environment
 - `make help`: Overview of tasks
 - `make fmt`: Format code
