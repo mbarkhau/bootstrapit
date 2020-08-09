@@ -10,7 +10,8 @@ Project/Repo:
 
 Code Quality/CI:
 
-[![Build Status][build_img]][build_ref]
+[![GitHub CI Status][github_build_img]][github_build_ref]
+[![GitLab CI Status][gitlab_build_img]][gitlab_build_ref]
 [![Type Checked with mypy][mypy_img]][mypy_ref]
 [![Code Coverage][codecov_img]][codecov_ref]
 [![Code Style: sjfmt][style_img]][style_ref]
@@ -21,22 +22,13 @@ Code Quality/CI:
 | ${AUTHOR_NAME} (${AUTHOR_EMAIL}) | author/maintainer | ${YEAR}-${MONTH} | -     |
 
 
-<!--
-  To update the TOC:
-  $ pip install md-toc
-  $ md_toc --in-place README.md gitlab
--->
-
-
-[](TOC)
-
-[](TOC)
-
-
 [repo_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}
 
-[build_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/pipeline.svg
-[build_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/pipelines
+[github_build_img]: https://github.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/workflows/CI/badge.svg
+[github_build_ref]: https://github.com/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/actions?query=workflow%3ACI
+
+[gitlab_build_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/pipeline.svg
+[gitlab_build_ref]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/pipelines
 
 [codecov_img]: https://${GIT_REPO_DOMAIN}/${GIT_REPO_NAMESPACE}/${GIT_REPO_NAME}/badges/master/coverage.svg
 [codecov_ref]: ${PAGES_URL}cov
