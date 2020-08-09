@@ -302,9 +302,6 @@ lint_isort:
 	@printf "isort ...\n"
 	@$(DEV_ENV)/bin/isort \
 		--check-only \
-		--force-single-line-imports \
-		--length-sort \
-		--recursive \
 		--line-width=$(MAX_LINE_LEN) \
 		--project $(MODULE_NAME) \
 		src/ test/
@@ -424,9 +421,6 @@ test:
 .PHONY: fmt_isort
 fmt_isort:
 	@$(DEV_ENV)/bin/isort \
-		--force-single-line-imports \
-		--length-sort \
-		--recursive \
 		--line-width=$(MAX_LINE_LEN) \
 		--project $(MODULE_NAME) \
 		src/ test/;
