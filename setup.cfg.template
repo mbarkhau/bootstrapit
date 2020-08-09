@@ -12,7 +12,7 @@ follow_imports = silent
 strict_optional = True
 ignore_missing_imports = True
 show_error_codes = True
-# warn_unreachable = True
+warn_unreachable = True
 warn_return_any = True
 warn_unused_ignores = True
 warn_redundant_casts = True
@@ -118,6 +118,7 @@ README.md =
 
 [tool:pylint]
 score = no
+reports = no
 
 jobs = 4
 
@@ -139,6 +140,12 @@ good-names = logger,i,ex
 extension-pkg-whitelist = numpy,pandas,lxml,PIL,sklearn,pyblake2
 
 notes=TODO,FIXME,XXX,SLOW,BUG
+
+# similarities/duplicaition checker
+min-similarity-lines=4
+ignore-comments=yes
+ignore-docstrings=yes
+ignore-imports=yes
 
 # https://pylint.pycqa.org/en/stable/technical_reference/features.html
 disable =
