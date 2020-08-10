@@ -23,7 +23,6 @@ warn_redundant_casts = True
 known_third_party = click,pathlib2
 force_single_line = True
 length_sort = True
-recursive = True
 
 
 [flake8]

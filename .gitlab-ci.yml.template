@@ -3,22 +3,33 @@ stages:
   - build
 
 
-unit:
+lint:
   stage: test
   image: ${DOCKER_BASE_IMAGE}
   script:
     - make lint
     - make mypy
+  artifacts:
+    reports:
+      junit:
+        - reports/flake8.xml
+    paths:
+      - reports/mypycov/
+  allow_failure: false
+
+
+unit:
+  stage: test
+  image: ${DOCKER_BASE_IMAGE}
+  script:
     - make test
   coverage: '/^(TOTAL|src).*?(\d+\%)$/'
   artifacts:
     reports:
       junit:
-        - reports/flake8.xml
         - reports/pytest.xml
     paths:
       - reports/testcov/
-      - reports/mypycov/
   allow_failure: false
 
 
