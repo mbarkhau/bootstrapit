@@ -60,8 +60,8 @@ The following files and configurations are applied by `bootstrapit.sh`.
 |               -                |                                                                  Description                                                                   |
 |--------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------|
 | `bootstrapit.sh`               | Entry point for bootstrapit, containing project configuration.                                                                                 |
-| `makefile`                     | Configuration (package name and python versions) and project specific make targets.                                                            |
-| `makefile.bootstrapit.make`    | General make targets to setup project and python environment.                                                                                  |
+| `Makefile`                     | Configuration (package name and python versions) and project specific make targets.                                                            |
+| `Makefile.bootstrapit.make`    | General make targets to setup project and python environment.                                                                                  |
 | `$ make conda`                 | Create conda environments for all configured python versions and install requirements.                                                         |
 | `$ make lint`                  | Linting using flake8                                                                                                                           |
 | `$ make fmt`                   | Code Formatting [straitjacket](https://pypi.org/project/straitjacket/)                                                                         |
@@ -75,7 +75,7 @@ The following files and configurations are applied by `bootstrapit.sh`.
 | `test/`                        | Test files.                                                                                                                                    |
 | `vendor/`                      | Vendored dependencies.                                                                                                                         |
 | `stubs/`                       | Stub files used by mypy.                                                                                                                       |
-| `scripts/`                     | Shell scripts (git hooks and dependencies of the `makefile`).                                                                                  |
+| `scripts/`                     | Shell scripts (git hooks and dependencies of the `Makefile`).                                                                                  |
 | `requirements/`                | Python dependencies from conda, pypi and git repositories                                                                                      |
 | `requirements/pypi.txt`        | The main file for library and project dependencies, when in doubt, add your dependency here.                                                   |
 | `requirements/conda.txt`       | For project dependencies installed from anaconda and conda-forge. Don't use this if you're project is a library which is installed by others.  |
