@@ -358,7 +358,6 @@ elif [[ -z "${IGNORE_IF_EXISTS[*]}" ]]; then
         "CHANGELOG.md"
         "README.md"
         "setup.py"
-        "makefile"
         "requirements/pypi.txt"
         "requirements/conda.txt"
         "requirements/vendor.txt"
