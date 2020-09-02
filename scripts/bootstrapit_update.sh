@@ -81,6 +81,7 @@ if [[ -f "makefile" && -f "makefile.bootstrapit.make" ]]; then
     printf "  mv makefile Makefile\n"
     printf "  mv makefile.bootstrapit.make Makefile.bootstrapit.make\n"
     sed -i 's/include makefile.bootstrapit.make/include Makefile.bootstrapit.make/g' makefile
+    git add makefile
     git mv makefile Makefile;
     git mv makefile.bootstrapit.make Makefile.bootstrapit.make;
 
