@@ -80,6 +80,7 @@ if [[ -f "makefile" && -f "makefile.bootstrapit.make" ]]; then
     printf "Change capitalization of makefile -> Makefile  # because too many rustled jimmies\n\n"
     printf "  mv makefile Makefile\n"
     printf "  mv makefile.bootstrapit.make Makefile.bootstrapit.make\n"
+    sed -i 's/include makefile.bootstrapit.make/include Makefile.bootstrapit.make/g' makefile
     git mv makefile Makefile;
     git mv makefile.bootstrapit.make Makefile.bootstrapit.make;
 
