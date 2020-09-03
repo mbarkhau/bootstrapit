@@ -29,6 +29,8 @@ install_requires = [
 long_description = "\n\n".join((read("README.md"), read("CHANGELOG.md")))
 
 
+python_requires = ">=3.6"
+
 # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -41,9 +43,15 @@ classifiers = [
     "Operating System :: MacOS :: MacOS X",
     # "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
+
+    # "Programming Language :: Python :: 2",
+    "Programming Language :: Python :: 3",
+
+    # Or more specific:
     # "Programming Language :: Python :: 2.7",
-    "Programming Language :: Python :: 3.6",
-    "Programming Language :: Python :: 3.7",
+    # "Programming Language :: Python :: 3.6",
+    # "Programming Language :: Python :: 3.7",
+    # "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries",
@@ -56,8 +64,12 @@ package_dir = {"": "src"}
 
 is_lib3to6_fix_required = (
     any(arg.startswith("bdist") for arg in sys.argv)
-    and "Programming Language :: Python :: 2.7" in classifiers
+    and (
+        "Programming Language :: Python :: 2.7" in classifiers
+        or "Programming Language :: Python :: 2" in classifiers
+    )
 )
+
 
 if is_lib3to6_fix_required:
     try:
@@ -91,7 +103,7 @@ setuptools.setup(
         [console_scripts]
         ${MODULE_NAME}=${MODULE_NAME}.__main__:cli
     """,
-    python_requires=">=3.6",
+    python_requires=python_requires,
     zip_safe=True,
     classifiers=classifiers,
 )
