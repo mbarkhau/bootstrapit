@@ -83,9 +83,6 @@ exclude =
     dist/
     .mypy_cache
 
-# Hopefully this can be resolved, so D404, D405 start working
-# https://github.com/PyCQA/pydocstyle/pull/188
-
 
 [tool:pytest]
 addopts = --doctest-modules
@@ -147,6 +144,8 @@ ignore-comments=yes
 ignore-docstrings=yes
 ignore-imports=yes
 
+ignored-argument-names=args|kwargs
+
 # https://pylint.pycqa.org/en/stable/technical_reference/features.html
 disable =
     bad-continuation,
@@ -161,3 +160,8 @@ disable =
     missing-module-docstring,
     missing-class-docstring,
     missing-function-docstring,
+    ungrouped-imports,
+
+generated-members =
+    # members of typing.NamedTuple
+    "(_replace|_asdict|_fields)",
