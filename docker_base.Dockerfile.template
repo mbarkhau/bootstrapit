@@ -9,11 +9,6 @@
 
 FROM ${DOCKER_ENV_BUILDER_IMAGE} AS builder
 
-# gcc required for cmarkgfm on python3.8
-# https://github.com/theacodes/cmarkgfm/issues/22
-RUN apt-get update
-RUN apt-get install -y gcc
-
 RUN mkdir /root/.ssh/ && \
     ssh-keyscan ${GIT_REPO_DOMAIN} >> /root/.ssh/known_hosts && \
     ssh-keyscan ${DOCKER_REGISTRY_DOMAIN} >> /root/.ssh/known_hosts
