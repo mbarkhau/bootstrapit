@@ -14,4 +14,5 @@
 # https://www.python.org/dev/peps/pep-0508/#environment-markers
 
 typing;python_version<"3.5"
-click
+click<8.0; python_version < "3.6"
+click; python_version >= "3.6"
